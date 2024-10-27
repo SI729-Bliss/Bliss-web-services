@@ -18,9 +18,10 @@ public class CompanyQueryServiceImpl implements CompanyQueryService {
     }
 
     @Override
-    public Optional<Company> getCompanyById(GetCompanyByIdQuery query) {
+    public Optional<Company> handle(GetCompanyByIdQuery query) {
         return this.companyRepository.findById(query.Id());
-    }
 
+
+    }
 
 }
