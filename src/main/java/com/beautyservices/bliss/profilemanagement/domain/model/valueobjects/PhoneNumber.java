@@ -4,15 +4,13 @@ package com.beautyservices.bliss.profilemanagement.domain.model.valueobjects;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public record PhoneNumber(String value) {
+public record PhoneNumber(String number) {
 
     public PhoneNumber {
-        if (value == null || value.isBlank()) {
+        if (number == null || number.isBlank()) {
             throw new IllegalArgumentException("Phone number cannot be null or blank");
         }
-        if (!value.matches("\\+?[0-9. ()-]{7,25}")) {
-            throw new IllegalArgumentException("Invalid phone number format");
-        }
+
     }
 
     public PhoneNumber() {
