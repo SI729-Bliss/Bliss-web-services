@@ -3,39 +3,35 @@ package com.beautyservices.bliss.profilemanagement.domain.model.aggregates;
 import com.beautyservices.bliss.profilemanagement.domain.model.valueobjects.Address;
 import com.beautyservices.bliss.profilemanagement.domain.model.valueobjects.Email;
 import com.beautyservices.bliss.profilemanagement.domain.model.valueobjects.PhoneNumber;
+import com.beautyservices.bliss.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+
+@Setter
 @Entity
 @Table(name = "companies")
-public class Company {
-
-    @Id
-    @Getter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Schema(description = "Entidad que representa a un salon de belleza")
+public class Company extends AuditableAbstractAggregateRoot<Company> {
 
     @Getter
-    @Setter
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Setter
     @Embedded
     @AttributeOverrides( {
-            @AttributeOverride(name = "email", column = @Column(name = "email", nullable = false))
+            @AttributeOverride(name = "email", column = @Column(name = "email"))
     })
     private Email email;
 
-    @Setter
     @Embedded
     @AttributeOverrides( {
             @AttributeOverride(name = "phoneNumber", column = @Column(name = "phone_number", nullable = false))
     })
     private PhoneNumber phoneNumber;
 
-    @Setter
     @Embedded
     @AttributeOverrides( {
             @AttributeOverride(name = "address", column = @Column(name = "address", nullable = false))
@@ -44,7 +40,7 @@ public class Company {
 
     //getters
     public String getEmail() {
-        return email.value();
+        return email.email();
     }
 
     public String getAddress() {
@@ -52,7 +48,7 @@ public class Company {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber.value();
+        return phoneNumber.number();
     }
 
 
