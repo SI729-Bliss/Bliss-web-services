@@ -1,4 +1,5 @@
 package com.beautyservices.bliss.profilemanagement.interfaces.rest.resources;
 
-public class ServiceResource {
+public record ServiceResource(double rating, String serviceCategory, String description, String entityDescription,
+                              double price, double entityPrice) {
 }
