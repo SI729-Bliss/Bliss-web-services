@@ -24,7 +24,7 @@ public class CompanyCommandServiceImpl implements CompanyCommandService {
         var companyId = command.id();
 
         if (!this.companyRepository.existsById(companyId)) {
-            throw new IllegalArgumentException("Profile with id " + companyId + " does not exist");
+            throw new IllegalArgumentException("company with id " + companyId + " does not exist");
         }
 
         var companyToUpdate = this.companyRepository.findById(companyId).get();
@@ -34,7 +34,7 @@ public class CompanyCommandServiceImpl implements CompanyCommandService {
             var updatedCompany = this.companyRepository.save(companyToUpdate);
             return Optional.of(updatedCompany);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error while updating profile: " + e.getMessage());
+            throw new IllegalArgumentException("Error while updating company profile: " + e.getMessage());
         }
 
     }
