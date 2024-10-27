@@ -13,12 +13,6 @@ import lombok.Getter;
 @Table(name = "specialists")
 public class Specialist extends AuditableAbstractAggregateRoot<Specialist> {
 
-    @Id
-    @NotNull
-    @NotBlank
-    @Getter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Getter
     @NotNull

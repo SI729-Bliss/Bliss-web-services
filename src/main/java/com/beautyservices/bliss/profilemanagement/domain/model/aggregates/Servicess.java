@@ -12,12 +12,6 @@ import lombok.Getter;
 @Table(name = "services")
 public class Servicess extends AuditableAbstractAggregateRoot<Servicess> {
 
-    @Id
-    @NotNull
-    @NotBlank
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotNull
     @NotBlank
     @Getter
