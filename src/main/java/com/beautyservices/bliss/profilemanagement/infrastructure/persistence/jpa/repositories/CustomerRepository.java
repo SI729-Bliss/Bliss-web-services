@@ -10,8 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    Optional<Customer> handle(GetCustomerByIdQuery query);
-
     boolean existsById(Long id);
     Optional<Customer> findById(Long id);
 
