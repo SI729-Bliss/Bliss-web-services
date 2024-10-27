@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.PUT})
 @RestController
-@RequestMapping(value="/api/customers", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value="/api/v1/customers", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Customers", description = "Customer Management Endpoints")
 public class CustomerController {
 
