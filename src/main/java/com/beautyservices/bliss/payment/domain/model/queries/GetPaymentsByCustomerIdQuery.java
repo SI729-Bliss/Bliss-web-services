@@ -1,4 +1,4 @@
 package com.beautyservices.bliss.payment.domain.model.queries;
 
-public record GetPaymentByIdQuery(Long paymentId) {
+public record GetPaymentsByCustomerIdQuery(Long customerId) {
 }

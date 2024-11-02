@@ -1,7 +1,9 @@
-/*package com.beautyservices.bliss.payment.domain.model.commands;
+package com.beautyservices.bliss.payment.domain.model.commands;
 
-public record CreatePaymentCommand(String status,
-                                   String paymentMethod,
-                                   Float amount,
+import com.beautyservices.bliss.payment.domain.model.valueobjects.PaymentMethod;
+import com.beautyservices.bliss.payment.domain.model.valueobjects.Status;
+
+public record CreatePaymentCommand(Float amount,
+                                   Long ticketId,
                                    Long customerId) {
-}*/
+}

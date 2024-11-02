@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/payment/tickets")
+@RequestMapping("/api/v1/payments/tickets")
 @Tag(name = "Ticket", description = "Ticket endpoints")
 public class TicketController {
     private final TicketCommandService ticketCommandService;
@@ -56,7 +56,7 @@ public class TicketController {
         if(ticket.isEmpty()) return ResponseEntity.notFound().build();
         ticketRepository.deleteById(ticketId);
 
-        return ResponseEntity.ok("Sowing with given id successfully deleted.");
+        return ResponseEntity.ok("Ticket with given id successfully deleted.");
 
     }
 }

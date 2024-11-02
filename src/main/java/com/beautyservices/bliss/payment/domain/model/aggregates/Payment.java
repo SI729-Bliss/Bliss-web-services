@@ -1,7 +1,10 @@
-/*package com.beautyservices.bliss.payment.domain.model.aggregates;
+package com.beautyservices.bliss.payment.domain.model.aggregates;
 
 import com.beautyservices.bliss.payment.domain.model.commands.CreatePaymentCommand;
+import com.beautyservices.bliss.payment.domain.model.valueobjects.CustomerId;
+import com.beautyservices.bliss.payment.domain.model.valueobjects.PaymentMethod;
 import com.beautyservices.bliss.payment.domain.model.valueobjects.ReservationId;
+import com.beautyservices.bliss.payment.domain.model.valueobjects.Status;
 import com.beautyservices.bliss.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +13,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -18,21 +22,24 @@ import java.util.Date;
 public class Payment extends AuditableAbstractAggregateRoot<Payment> {
 
     @NotNull
-    private String status;
-
-    @NotNull
-    private String paymentMethod;
+    private LocalDate date;
 
     @NotNull
     private Float amount;
 
     @NotNull
-    @JoinColumn(name = "customers_id")
-    private Customer customerId;
+    private PaymentMethod paymentMethod;
 
     @NotNull
-    @JoinColumn(name = "reservation_id")
-    private ReservationId reservationId;
+    private Status status;
+
+    @OneToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
+
+    @NotNull
+    @JoinColumn(name = "customers_id")
+    private CustomerId customerId;
 
     @CreatedDate
     private Date createdAt;
@@ -44,10 +51,13 @@ public class Payment extends AuditableAbstractAggregateRoot<Payment> {
     public Payment() {
     }
 
-    public Payment(CreatePaymentCommand command) {
-        this.status = command.status();
-        this.paymentMethod = command.paymentMethod();
+    public Payment(CreatePaymentCommand command, Ticket ticket) {
+        this();
+        this.date = LocalDate.now();
         this.amount = command.amount();
-        this.customerId = new Customer(command.customerId());
+        this.paymentMethod = PaymentMethod.YAPE;
+        this.status = Status.PENDING;
+        this.ticket = ticket;
+        this.customerId = new CustomerId(command.customerId());
     }
-}*/
+}
