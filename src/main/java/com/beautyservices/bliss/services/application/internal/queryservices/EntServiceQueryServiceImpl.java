@@ -36,7 +36,7 @@ public class EntServiceQueryServiceImpl implements EntServiceQueryService {
     // Implement find by salonId
     @Override
     public List<Service> handle(GetServicesBySalonIdQuery query) {
-        return this.serviceRepository.getBySalonId(query.salonId());
+        return this.serviceRepository.findBySalonId_BeautySalonId(query.beautySalonId());
     }
 
     /*

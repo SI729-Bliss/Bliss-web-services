@@ -25,7 +25,7 @@ public class EntServiceCommandServiceImpl implements EntServiceCommandService {
         if (this.serviceRepository.existsByName(name)){
             throw new IllegalArgumentException("Service with name " + name + " already exists");
         }
-        
+
         var profile = new Service(command);
         try {
             this.serviceRepository.save(profile);
@@ -43,15 +43,21 @@ public class EntServiceCommandServiceImpl implements EntServiceCommandService {
         var serviceId = command.serviceId();
         var serviceName = command.name();
 
-
         // If the service does not exist, throw an exception
         if (!this.serviceRepository.existsById(serviceId)){
             throw new IllegalArgumentException("Service with id " + serviceId + " does not exist");
         }
 
+        // Validate service name
+        if (this.serviceRepository.existsByNameAndIdIsNot(serviceName, serviceId)){
+            throw new IllegalArgumentException("Service with name: " + serviceName + " already exists");
+        }
+
         // Obtain service to update
         var serviceToUpdate = this.serviceRepository.findById(serviceId).get();
-        // Update in Aggregate
+
+
+        // Update using Aggregate
         serviceToUpdate.updateServiceInformation(command.name(), command.imageUrl(), command.description(), command.basePrice());
 
         try {
