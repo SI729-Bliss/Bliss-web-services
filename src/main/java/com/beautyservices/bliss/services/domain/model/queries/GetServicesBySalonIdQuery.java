@@ -1,4 +1,4 @@
 package com.beautyservices.bliss.services.domain.model.queries;
 
-public record GetServicesBySalonIdQuery(Long salonId) {
+public record GetServicesBySalonIdQuery(Long beautySalonId) {
 }
