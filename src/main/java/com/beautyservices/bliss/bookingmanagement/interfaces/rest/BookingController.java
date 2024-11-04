@@ -1,13 +1,13 @@
 package com.beautyservices.bliss.bookingmanagement.interfaces.rest;
 
-import com.beautyservices.bliss.bookingmanagements.domain.services.BookingCommandService;
-import com.beautyservices.bliss.bookingmanagements.domain.services.BookingQueryService;
-import com.beautyservices.bliss.bookingmanagements.interfaces.rest.resources.CreateBookingResource;
-import com.beautyservices.bliss.bookingmanagements.interfaces.rest.resources.BookingResource;
-import com.beautyservices.bliss.bookingmanagements.resources.CreateBookingCommandFromResourceAssembler;
-import com.beautyservices.bliss.bookingmanagements.resources.UpdateBookingCommandFromResourceAssembler;
-import com.beautyservices.bliss.bookingmanagements.resources.BookingResourceFromEntityAssembler;
-import com.beautyservices.bliss.bookingmanagements.domain.model.commands.DeleteBookingCommand;
+import com.beautyservices.bliss.bookingmanagement.domain.services.BookingCommandService;
+import com.beautyservices.bliss.bookingmanagement.domain.services.BookingQueryService;
+import com.beautyservices.bliss.bookingmanagement.interfaces.rest.resources.CreateBookingResource;
+import com.beautyservices.bliss.bookingmanagement.interfaces.rest.resources.BookingResource;
+import com.beautyservices.bliss.bookingmanagement.resources.CreateBookingCommandFromResourceAssembler;
+import com.beautyservices.bliss.bookingmanagement.resources.UpdateBookingCommandFromResourceAssembler;
+import com.beautyservices.bliss.bookingmanagement.resources.BookingResourceFromEntityAssembler;
+import com.beautyservices.bliss.bookingmanagement.domain.model.commands.DeleteBookingCommand;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.beautyservices.bliss.bookingmanagement.domain.services;
 
-import com.beautyservices.bliss.bookingmanagements.domain.model.aggregates.ServiceCustomization;
-import com.beautyservices.bliss.bookingmanagements.infrastructure.persistence.jpa.repositories.ServiceCustomizationRepository;
+import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.ServiceCustomization;
+import com.beautyservices.bliss.bookingmanagement.infrastructure.persistence.jpa.repositories.ServiceCustomizationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

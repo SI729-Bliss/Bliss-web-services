@@ -1,6 +1,6 @@
 package com.beautyservices.bliss.bookingmanagement.infrastructure.persistence.jpa.repositories;
 
-import com.beautyservices.bliss.bookingmanagements.domain.model.aggregates.ServiceCustomization;
+import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.ServiceCustomization;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

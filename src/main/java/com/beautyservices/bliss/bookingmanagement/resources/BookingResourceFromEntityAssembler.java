@@ -1,7 +1,7 @@
 package com.beautyservices.bliss.bookingmanagement.resources;
 
-import com.beautyservices.bliss.bookingmanagements.domain.model.aggregates.BookingService;
-import com.beautyservices.bliss.bookingmanagements.interfaces.rest.resources.BookingResource;
+import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.BookingService;
+import com.beautyservices.bliss.bookingmanagement.interfaces.rest.resources.BookingResource;
 
 public class BookingResourceFromEntityAssembler {
     public static BookingResource toResourceFromEntity(BookingService bookingService) {

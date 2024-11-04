@@ -1,7 +1,7 @@
 package com.beautyservices.bliss.bookingmanagement.interfaces.rest;
 
-import com.beautyservices.bliss.bookingmanagements.domain.model.aggregates.Service;
-import com.beautyservices.bliss.bookingmanagements.domain.services.ServiceService;
+import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.Service;
+import com.beautyservices.bliss.bookingmanagement.domain.services.ServiceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
