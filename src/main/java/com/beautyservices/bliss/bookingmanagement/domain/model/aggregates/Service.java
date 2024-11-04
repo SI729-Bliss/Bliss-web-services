@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "BookingServiceEntity")
 @Table(name = "services")
 @Getter
 @Setter
@@ -19,16 +19,16 @@ public class Service {
     @Column(nullable = false)
     private String language;
 
-    @Column(nullable = false)
+    @Column(name = "category_id", nullable = false)
     private Long categoryId;
 
-    @Column(nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "base_price", nullable = false)
     private Double basePrice;
 
     @Column(nullable = false)
@@ -43,6 +43,6 @@ public class Service {
     @Column(nullable = false)
     private String image;
 
-    @Column(nullable = false)
+    @Column(name = "beauty_salon_id", nullable = false)
     private Long beautySalonId;
 }

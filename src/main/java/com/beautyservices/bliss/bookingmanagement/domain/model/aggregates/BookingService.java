@@ -11,7 +11,6 @@ import lombok.Setter;
 @Schema(description = "Entidad que representa un servicio de reserva")
 @Getter
 @Setter
-
 public class BookingService extends AuditableAbstractAggregateRoot<BookingService> {
 
     @Id
