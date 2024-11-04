@@ -9,6 +9,7 @@ public record PaymentResource(Long paymentId,
                               Float amount,
                               String paymentMethod,
                               String status,
-                              Long ticketId,
+                              String invoiceType,
+                              Long reservationId,
                               Long customerId) {
 }

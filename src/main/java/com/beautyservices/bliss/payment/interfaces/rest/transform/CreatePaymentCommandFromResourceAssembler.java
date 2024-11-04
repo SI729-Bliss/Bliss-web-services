@@ -6,6 +6,6 @@ import com.beautyservices.bliss.payment.interfaces.rest.resources.CreatePaymentR
 
 public class CreatePaymentCommandFromResourceAssembler {
     public static CreatePaymentCommand toCommandFromResource(CreatePaymentResource resource) {
-        return new CreatePaymentCommand(resource.amount(), resource.ticket(), resource.customerId());
+        return new CreatePaymentCommand(resource.amount(), resource.reservationId(), resource.customerId());
     }
 }

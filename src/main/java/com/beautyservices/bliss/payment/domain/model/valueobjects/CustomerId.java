@@ -4,6 +4,7 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public record CustomerId(Long customerId) {
+
     public CustomerId() {
         this(0L);
     }
