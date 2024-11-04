@@ -1,6 +1,5 @@
 package com.beautyservices.bliss.profilemanagement.infrastructure.persistence.jpa.repositories;
 
-import com.beautyservices.bliss.profilemanagement.domain.model.aggregates.Servicess;
 import com.beautyservices.bliss.profilemanagement.domain.model.aggregates.Specialist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
