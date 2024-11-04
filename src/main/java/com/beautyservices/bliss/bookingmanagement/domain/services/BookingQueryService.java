@@ -1,6 +1,6 @@
 package com.beautyservices.bliss.bookingmanagement.domain.services;
 
-import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.BookingService;
+import com.beautyservices.bliss.bookingmanagements.domain.model.aggregates.BookingService;
 
 import java.util.Optional;
 

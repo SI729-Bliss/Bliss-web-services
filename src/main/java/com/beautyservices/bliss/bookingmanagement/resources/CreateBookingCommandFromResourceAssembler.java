@@ -1,7 +1,7 @@
 package com.beautyservices.bliss.bookingmanagement.resources;
 
-import com.beautyservices.bliss.bookingmanagement.domain.model.commands.CreateBookingCommand;
-import com.beautyservices.bliss.bookingmanagement.interfaces.rest.resources.CreateBookingResource;
+import com.beautyservices.bliss.bookingmanagements.domain.model.commands.CreateBookingCommand;
+import com.beautyservices.bliss.bookingmanagements.interfaces.rest.resources.CreateBookingResource;
 import org.springframework.stereotype.Component;
 
 @Component

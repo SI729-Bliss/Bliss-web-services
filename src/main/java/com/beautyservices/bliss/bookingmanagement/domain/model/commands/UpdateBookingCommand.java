@@ -1,6 +1,6 @@
 package com.beautyservices.bliss.bookingmanagement.domain.model.commands;
 
-import com.beautyservices.bliss.bookingmanagement.domain.model.valueobjects.Description;
+import com.beautyservices.bliss.bookingmanagements.domain.model.valueobjects.Description;
 
 public record UpdateBookingCommand(Long bookingId, Description message) {
     public UpdateBookingCommand(Long id, Long customerId, Long serviceId, String date, String time, String status, String fullName, String email, String service, String availability, String message, String requirements) {

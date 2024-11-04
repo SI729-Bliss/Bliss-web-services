@@ -1,7 +1,7 @@
 package com.beautyservices.bliss.bookingmanagement.domain.services;
 
-import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.Service;
-import com.beautyservices.bliss.bookingmanagement.infrastructure.persistence.jpa.repositories.BookingServiceRepository;
+import com.beautyservices.bliss.bookingmanagements.domain.model.aggregates.Service;
+import com.beautyservices.bliss.bookingmanagements.infrastructure.persistence.jpa.repositories.BookingServiceRepository;
 
 import java.util.List;
 
