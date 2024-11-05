@@ -16,14 +16,18 @@ public class BlissApplication {
 		SpringApplication.run(BlissApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("/**).allowedMethods("*").allowedHeaders("*");
-			}
-		};
+	@Configuration
+	public static class Myconfiguration{
+		@Bean
+		public WebMvcConfigurer corsConfigurer() {
+			return new WebMvcConfigurer() {
+				@Override
+				public void addCorsMappings(CorsRegistry registry) {
+					registry.addMapping("/**").allowedOrigins("/**).allowedMethods("*").allowedHeaders("*");
+				}
+			};
+		}
 	}
 	
 }
+
