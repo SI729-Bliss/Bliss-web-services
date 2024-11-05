@@ -11,10 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableJpaAuditing
 @SpringBootApplication
 public class BlissApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(BlissApplication.class, args);
-	}
+	
 	@Configuration
 	public static class Myconfiguration{
 		@Bean
@@ -28,4 +25,12 @@ public class BlissApplication {
 			};
 		}
 	}
+	
+
+
+	public static void main(String[] args) {
+		SpringApplication.run(BlissApplication.class, args);
+	}
+	
+
 }
