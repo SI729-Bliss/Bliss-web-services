@@ -10,30 +10,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableJpaAuditing
 @SpringBootApplication
-public class BlissApplication {
+public class CrudApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BlissApplication.class, args);
+		SpringApplication.run(CrudApplication.class, args);
 	}
 
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("/**).allowedMethods("*").allowedHeaders("*");
+			}
+		};
+	}
 	
-	@Configuration
-	public static class Myconfiguration{
-		@Bean
-		public WebMvcConfigurer corsConfigurer() {
-		    return new WebMvcConfigurer() {
-		        @Override
-		        public void addCorsMappings(CorsRegistry registry) {
-		            registry.addMapping("/**")
-		                    .allowedOrigins("https://exquisite-possibility-production.up.railway.app/swagger-ui/index.html", "http://localhost:8080") // Cambia por tu dominio
-		                    .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
-		                    .allowedHeaders("Authorization", "Content-Type", "Accept")
-		                    .allowCredentials(true);
-		        }
-		    };
-		}
-
-
-	}
-
 }
