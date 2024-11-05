@@ -25,7 +25,7 @@ public class BlissApplication {
 		        @Override
 		        public void addCorsMappings(CorsRegistry registry) {
 		            registry.addMapping("/**")
-		                    .allowedOrigins("https://exquisite-possibility-production.up.railway.app", "http://localhost:8080") // Cambia por tu dominio
+		                    .allowedOrigins("https://exquisite-possibility-production.up.railway.app/swagger-ui/index.html", "http://localhost:8080") // Cambia por tu dominio
 		                    .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
 		                    .allowedHeaders("Authorization", "Content-Type", "Accept")
 		                    .allowCredentials(true);
