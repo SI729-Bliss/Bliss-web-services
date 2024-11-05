@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableJpaAuditing
 @SpringBootApplication
-public class CrudApplication {
+public class BlissApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CrudApplication.class, args);
