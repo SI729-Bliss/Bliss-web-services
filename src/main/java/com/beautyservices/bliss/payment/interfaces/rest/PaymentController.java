@@ -18,6 +18,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * PaymentController
+ * <p>
+ *     This class is the REST controller for the Payment API.
+ *     It contains the endpoints for creating and retrieving payments.
+ *     The class uses the PaymentCommandService and PaymentQueryService to handle the commands and queries.
+ *     <ul>
+ *         <li>POST /api/v1/payments/payment/ - Create a payment</li>
+ *         <li>GET /api/v1/payments/payment/ - Get all payments</li>
+ *         <li>GET /api/v1/payments/payment/{paymentId} - Get a payment by id</li>
+ *     </ul>
+ * </p>
+ */
+@CrossOrigin(origins = "*", methods = { RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE })
 @RestController
 @RequestMapping(value = "/api/v1/payments/payment/", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Payment", description = "Payment API")
@@ -34,10 +48,17 @@ public class PaymentController {
     }
 
 
+    /**
+     * Create a payment
+     * @param createPaymentResource the resource containing data for the payment to be created
+     * @return the created payment resource
+     * @see CreatePaymentResource
+     * @see PaymentResource
+     */
     @PostMapping
-    public ResponseEntity<PaymentResource> createSowing(@RequestBody CreatePaymentResource createPaymentResource) {
+    public ResponseEntity<PaymentResource> createPayment(@RequestBody CreatePaymentResource createPaymentResource) {
         var createPaymentCommand = CreatePaymentCommandFromResourceAssembler.toCommandFromResource(createPaymentResource);
-        var paymentId = paymentCommandService.handle(createPaymentCommand);
+        var paymentId = this.paymentCommandService.handle(createPaymentCommand);
         if(paymentId == 0L) return ResponseEntity.badRequest().build();
 
         var payment = paymentRepository.findById(paymentId).orElseThrow();
@@ -47,6 +68,12 @@ public class PaymentController {
         return new ResponseEntity<>(paymentResourceCreated, HttpStatus.CREATED);
     }
 
+
+    /**
+     * Get all payments
+     * @return a list of all payments
+     * @see PaymentResource
+     */
     @GetMapping
     public ResponseEntity<List<PaymentResource>> getAllPayments() {
         var getAllPaymentsQuery = new GetAllPaymentsQuery();
@@ -57,6 +84,12 @@ public class PaymentController {
         return ResponseEntity.ok(paymentResource);
     }
 
+    /**
+     * Get a payment by id
+     * @param paymentId the id of the payment to retrieve
+     * @return the payment resource
+     * @see PaymentResource
+     */
     @GetMapping("/{paymentId}")
     public ResponseEntity<PaymentResource> getPaymentById(@PathVariable Long paymentId) {
         var getPaymentByIdQuery = new GetPaymentByIdQuery(paymentId);
