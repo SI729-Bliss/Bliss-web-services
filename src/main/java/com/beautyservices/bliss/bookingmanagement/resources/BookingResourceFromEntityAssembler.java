@@ -18,7 +18,7 @@ public class BookingResourceFromEntityAssembler {
         resource.setAvailability(bookingService.getAvailability());
         resource.setMessage(bookingService.getMessage());
         resource.setRequirements(bookingService.getRequirements());
-        resource.setCreatedDate(bookingService.getCreatedDate().toString());
+        resource.setCreatedDate(bookingService.getCreatedDate() != null ? bookingService.getCreatedDate().toString() : null);
         return resource;
     }
 }

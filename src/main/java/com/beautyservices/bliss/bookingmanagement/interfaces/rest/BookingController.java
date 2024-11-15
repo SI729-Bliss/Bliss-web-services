@@ -9,9 +9,11 @@ import com.beautyservices.bliss.bookingmanagement.resources.UpdateBookingCommand
 import com.beautyservices.bliss.bookingmanagement.resources.BookingResourceFromEntityAssembler;
 import com.beautyservices.bliss.bookingmanagement.domain.model.commands.DeleteBookingCommand;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE })
 @RestController
@@ -52,6 +54,9 @@ public class BookingController {
 
     @PutMapping("/{id}")
     public ResponseEntity<BookingResource> updateBooking(@PathVariable Long id, @RequestBody BookingResource resource) {
+        if (id == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given id must not be null");
+        }
         var command = updateBookingCommandFromResourceAssembler.toCommand(id, resource);
         var updatedBooking = bookingCommandService.handle(command)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
@@ -61,7 +66,11 @@ public class BookingController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-        bookingCommandService.handle(new DeleteBookingCommand(id));
-        return ResponseEntity.noContent().build();
+        try {
+            bookingCommandService.handle(new DeleteBookingCommand(id));
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 }
