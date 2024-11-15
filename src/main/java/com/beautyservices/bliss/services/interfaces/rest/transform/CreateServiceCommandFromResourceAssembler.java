@@ -5,6 +5,6 @@ import com.beautyservices.bliss.services.interfaces.rest.resources.CreateService
 
 public class CreateServiceCommandFromResourceAssembler {
     public static CreateServiceCommand toCommandFromResource(CreateServiceResource resource) {
-        return new CreateServiceCommand(resource.name(), resource.imageUrl(), resource.description(), resource.basePrice());
+        return new CreateServiceCommand(resource.name(), resource.categoryId(), resource.imageUrl(), resource.description(), resource.basePrice(), resource.salonId());
     }
 }

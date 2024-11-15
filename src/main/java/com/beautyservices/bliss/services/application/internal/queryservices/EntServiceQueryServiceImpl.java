@@ -29,19 +29,10 @@ public class EntServiceQueryServiceImpl implements EntServiceQueryService {
         return this.serviceRepository.findById(query.serviceId());
     }
 
-    //find by service name
-    //@Override
-    //public Optional<Service> handle()
-
     // Implement find by salonId
     @Override
     public List<Service> handle(GetServicesBySalonIdQuery query) {
-        return this.serviceRepository.findBySalonId_BeautySalonId(query.beautySalonId());
+        return this.serviceRepository.findBySalonId(query.beautySalonId());
     }
-
-    /*
-    public Optional<long> getTotal() {
-        return serviceRepository.count();
-    }*/
 
 }

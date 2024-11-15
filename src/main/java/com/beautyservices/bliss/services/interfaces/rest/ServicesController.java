@@ -21,7 +21,7 @@ import com.beautyservices.bliss.services.interfaces.rest.transform.UpdateService
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", methods = {})
+@CrossOrigin(origins = "*", methods = { RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE })
 @RestController
 @RequestMapping(value = "/api/v1/services", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Services", description = "Service Management Endpoints")
@@ -41,6 +41,7 @@ public class ServicesController {
 
         var createServiceCommand = CreateServiceCommandFromResourceAssembler
                 .toCommandFromResource(resource);
+
         var serviceId = this.entServiceCommandService.handle(createServiceCommand);
 
         if (serviceId.equals(0L)) {
@@ -53,27 +54,6 @@ public class ServicesController {
         var serviceResource = ServiceResourceFromEntityAssembler.toResourceFromEntity(optionalService.get());
         return new ResponseEntity<>(serviceResource, HttpStatus.CREATED);
     }
-
-    // Salon id
-    /*
-    @PostMapping("/{salonId}")
-    public ResponseEntity<ServiceResource> createServiceWithSalonId(@PathVariable Long salonId) {
-
-        var createServiceCommand = CreateServiceCommandFromResourceAssembler
-                .toCommandFromResource(resource);
-        var serviceId = this.entServiceCommandService.handle(createServiceCommand);
-
-        if (serviceId.equals(0L)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        var getServiceByIdQuery = new GetServiceByIdQuery(serviceId);
-        var optionalService = this.entServiceQueryService.handle(getServiceByIdQuery);
-
-        var serviceResource = ServiceResourceFromEntityAssembler.toResourceFromEntity(optionalService.get());
-        return new ResponseEntity<>(serviceResource, HttpStatus.CREATED);
-    }
-    */
 
     // Get all services
     @GetMapping
@@ -94,8 +74,11 @@ public class ServicesController {
             return ResponseEntity.badRequest().build();
         }
 
-        var getServicesBySalonIdQuery = new GetServicesBySalonIdQuery(beautySalonId);
+        BeautySalonId salonId = new BeautySalonId(beautySalonId);
+
+        var getServicesBySalonIdQuery = new GetServicesBySalonIdQuery(salonId);
         var services = this.entServiceQueryService.handle(getServicesBySalonIdQuery);
+
         var servicesResources = services.stream()
                 .map(ServiceResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
