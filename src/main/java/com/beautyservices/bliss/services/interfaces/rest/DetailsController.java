@@ -9,6 +9,10 @@ import com.beautyservices.bliss.services.interfaces.rest.resources.DetailResourc
 import com.beautyservices.bliss.services.interfaces.rest.transform.CreateDetailCommandFromResourceAssembler;
 import com.beautyservices.bliss.services.interfaces.rest.transform.DetailResourceFromEntityAssembler;
 import com.beautyservices.bliss.services.interfaces.rest.transform.UpdateDetailCommandFromResourceAssembler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +37,29 @@ public class DetailsController {
     }
 
     // Create detail
+    @Operation(
+            summary = "Add a new service detail",
+            description = "Add a new service detail for service",
+            operationId = "createDetail",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = CreateDetailResource.class)
+                            )
+                    ),
+                    @ApiResponse (
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content (
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    )
+            }
+    )
     @PostMapping
     public ResponseEntity<DetailResource> createDetail(@RequestBody CreateDetailResource resource){
         var createDetailCommand = CreateDetailCommandFromResourceAssembler
@@ -52,6 +79,21 @@ public class DetailsController {
     }
 
     // Get by Service id
+    @Operation(
+            summary = "Fetch Details by Service id",
+            description = "Fetch all Details by Service id",
+            operationId = "getDetailsByServiceId",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = DetailResource.class)
+                            )
+                    )
+            }
+    )
     @GetMapping("/findByService")
     public ResponseEntity<List<DetailResource>> getByService(@RequestParam(name = "serviceId") Long serviceId) {
         if (serviceId == null) {
@@ -69,6 +111,29 @@ public class DetailsController {
     }
 
     // Update
+    @Operation(
+            summary = "Update a detail",
+            description = "Update details for one service",
+            operationId = "updateDetail",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful update",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = CreateDetailResource.class)
+                            )
+                    ),
+                    @ApiResponse (
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content (
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    )
+            }
+    )
     @PutMapping("/{detailId}")
     public ResponseEntity<DetailResource> updateDetail(@PathVariable Long detailId, @RequestBody DetailResource resource){
         var updateDetailCommand = UpdateDetailCommandFromResourceAssembler.toCommandFromResource(detailId, resource);

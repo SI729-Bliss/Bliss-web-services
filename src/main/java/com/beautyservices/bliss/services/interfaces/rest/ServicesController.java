@@ -1,6 +1,12 @@
 package com.beautyservices.bliss.services.interfaces.rest;
 
 import com.beautyservices.bliss.services.domain.model.valueobjects.BeautySalonId;
+import com.beautyservices.bliss.services.interfaces.rest.resources.CreateDetailResource;
+import com.beautyservices.bliss.services.interfaces.rest.resources.DetailResource;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +42,29 @@ public class ServicesController {
     }
 
     // Create service
+    @Operation(
+            summary = "Add a new service",
+            description = "Add a new service by Beauty Salon",
+            operationId = "createService",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = CreateServiceResource.class)
+                            )
+                    ),
+                    @ApiResponse (
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content (
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    )
+            }
+    )
     @PostMapping
     public ResponseEntity<ServiceResource> createService(@RequestBody CreateServiceResource resource) {
 
@@ -56,6 +85,21 @@ public class ServicesController {
     }
 
     // Get all services
+    @Operation(
+            summary = "Fetch all services",
+            description = "Fetch all services created",
+            operationId = "getServices",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ServiceResource.class)
+                            )
+                    )
+            }
+    )
     @GetMapping
     public ResponseEntity<List<ServiceResource>> getAllServices() {
         var getAllServicesQuery = new GetAllServicesQuery();
@@ -67,6 +111,21 @@ public class ServicesController {
     }
 
     // Get by salon
+    @Operation(
+            summary = "Fetch all services for one salon",
+            description = "Fetch all services by beauty salon id",
+            operationId = "getServicesBySalonId",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ServiceResource.class)
+                            )
+                    )
+            }
+    )
     @GetMapping("/findBySalon")
     public ResponseEntity<List<ServiceResource>> getBySalonId(@RequestParam(name = "BeautySalonId") Long beautySalonId ) {
 
@@ -87,6 +146,29 @@ public class ServicesController {
     }
 
     // Update Service
+    @Operation(
+            summary = "Update a service",
+            description = "Update service by service id",
+            operationId = "updateService",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful update",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = DetailResource.class)
+                            )
+                    ),
+                    @ApiResponse (
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content (
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    )
+            }
+    )
     @PutMapping("/{serviceId}")
     public ResponseEntity<ServiceResource> updateService(@PathVariable Long serviceId, @RequestBody ServiceResource resource) {
         var updateServiceCommand = UpdateServiceCommandFromResourceAssembler.toCommandFromResource(serviceId, resource);
@@ -99,6 +181,21 @@ public class ServicesController {
     }
 
     // Delete Service
+    @Operation(
+            summary = "Delete a service",
+            description = "Delete a service by service id",
+            operationId = "deleteService",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful delete",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ServiceResource.class)
+                            )
+                    )
+            }
+    )
     @DeleteMapping("/{serviceId}")
     public ResponseEntity<?> deleteService(@PathVariable Long serviceId) {
         var deleteServiceCommand = new DeleteServiceCommand(serviceId);
