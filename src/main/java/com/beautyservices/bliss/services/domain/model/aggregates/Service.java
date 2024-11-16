@@ -69,7 +69,9 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
         this.categoryId = categoryId;
         this.salonId = beautySalonId;
     }
-
+    public Service(Long id) {
+        this.id = id;
+    }
     public Long getCategoryId(){
         //return categoryId.categoryId();
         return 0L;
