@@ -4,9 +4,12 @@ package com.beautyservices.bliss.reviewmanagement.domain.model.aggregates;
 import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.Reservation;
 import com.beautyservices.bliss.reviewmanagement.domain.model.valueobjects.ReservationInfo;
 import com.beautyservices.bliss.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,10 +17,15 @@ import lombok.Setter;
 @Table(name = "reviews")
 public class Review extends AuditableAbstractAggregateRoot<Review> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = false)
+    @Column(name = "reservation_id", nullable = false)
+    private Long reservationId;
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "reservation_id", insertable = false, updatable = false)
     private Reservation reservation;
 
     private int punctuation;
@@ -26,14 +34,18 @@ public class Review extends AuditableAbstractAggregateRoot<Review> {
     @Embedded
     private ReservationInfo reservationInfo;
 
+    @ElementCollection
+    @CollectionTable(name = "review_images", joinColumns = @JoinColumn(name = "review_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls;
 
     public Review() {}
 
-
-    public Review(Reservation reservation, int punctuation, String comment, ReservationInfo reservationInfo) {
-        this.reservation = reservation;
+    public Review(Long reservationId, int punctuation, String comment, ReservationInfo reservationInfo, List<String> imageUrls) {
+        this.reservationId = reservationId;
         this.punctuation = punctuation;
         this.comment = comment;
         this.reservationInfo = reservationInfo;
+        this.imageUrls = imageUrls;
     }
 }

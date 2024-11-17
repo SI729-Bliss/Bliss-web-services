@@ -29,8 +29,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         if (reservationOpt.isPresent()) {
             Reservation reservation = reservationOpt.get();
             ReservationInfo reservationInfo = new ReservationInfo(reservation.getServiceId(), reservation.getCompanyId());
-            Review review = new Review(reservation, command.punctuation(), command.comment(), reservationInfo);
-            try {
+            Review review = new Review(reservation.getId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());            try {
                 reviewRepository.save(review);
             } catch (Exception e) {
                 throw new IllegalArgumentException("Error while saving review: " + e.getMessage());
@@ -47,6 +46,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
             Review review = reviewOpt.get();
             review.setPunctuation(command.punctuation());
             review.setComment(command.comment());
+            review.setImageUrls(command.imageUrls());
             reviewRepository.save(review);
             return Optional.of(review);
         }

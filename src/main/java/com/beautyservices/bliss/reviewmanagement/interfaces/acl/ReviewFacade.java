@@ -1,4 +1,3 @@
-// ReviewFacade.java
 package com.beautyservices.bliss.reviewmanagement.interfaces.acl;
 
 import com.beautyservices.bliss.profilemanagement.application.internal.outboundservices.acl.CompanyRatingService;
@@ -39,8 +38,7 @@ public class ReviewFacade {
         if (reservationOpt.isPresent()) {
             Reservation reservation = reservationOpt.get();
             ReservationInfo reservationInfo = new ReservationInfo(reservation.getServiceId(), reservation.getCompanyId());
-            Review review = new Review(reservation, command.punctuation(), command.comment(), reservationInfo);
-            Review savedReview = reviewCommandService.createReview(command).orElse(null);
+            Review review = new Review(reservation.getId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());            Review savedReview = reviewCommandService.createReview(command).orElse(null);
             if (savedReview != null) {
                 companyRatingService.updateCompanyRating(reservation.getCompanyId(), command.punctuation());
                 return Optional.of(savedReview);
@@ -49,8 +47,8 @@ public class ReviewFacade {
         return Optional.empty();
     }
 
-    public Optional<Review> updateReview(Long id, int punctuation, String comment) {
-        return reviewCommandService.updateReview(new UpdateReviewCommand(id, punctuation, comment));
+    public Optional<Review> updateReview(Long id, int punctuation, String comment, List<String> imageUrls) {
+        return reviewCommandService.updateReview(new UpdateReviewCommand(id, punctuation, comment, imageUrls));
     }
 
     public void deleteReview(Long id) {
@@ -66,6 +64,11 @@ public class ReviewFacade {
     }
 
     public List<Review> getReviewsByUserId(Long userId) {
-        return reviewRepository.findByReservation_Id(userId);
+        return reviewRepository.findByReservationId(userId);
+    }
+
+
+    public List<Review> getReviewsByReservationId(Long reservationId) {
+        return reviewRepository.findByReservationId(reservationId);
     }
 }
