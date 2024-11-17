@@ -1,13 +1,13 @@
 package com.beautyservices.bliss.services.domain.model.valueobjects;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public record BeautySalonId(Long beautySalonId) {
     public BeautySalonId {
-        if (beautySalonId <= 0) {
-            throw new IllegalArgumentException("Salon beautySalonId cannot be negative or 0");
+        if (beautySalonId == null || beautySalonId < 0) {
+            throw new IllegalArgumentException("Salon id cannot be null");
         }
     }
 
-    public BeautySalonId() {
-        this(0L);
-    }
 }

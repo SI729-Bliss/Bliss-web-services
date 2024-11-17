@@ -9,14 +9,12 @@ import java.util.List;
 
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Long> {
-    boolean existsByName(String name); // Validate existing names
 
-    boolean existsByNameAndIdIsNot(String name, Long id);
+    boolean existsByNameAndSalonId(String name, BeautySalonId salonId);
 
-    // Optional<Service> findByName(String name);
+    boolean existsByNameAndSalonIdAndIdIsNot(String name, BeautySalonId salonId, Long id);
 
-    //List<Service> getAllBySalonId(BeautySalonId salonId); // List by salonId
-    List<Service> findBySalonId_BeautySalonId(Long beautySalonId);
+    // List by salonId
+    List<Service> findBySalonId(BeautySalonId beautySalonId);
 
-    //long countAllBySalonId(Long beautySalonId); // Count services by salonId
 }
