@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET})
 @RestController
 @RequestMapping(value = "/api/v1/specialists", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Specialists", description = "Specialists Management Endpoints")
+@Tag(name = "Profiles Management", description = "Profiles Management Endpoints")
 public class SpecialistsController {
     private final SpecialistQueryService specialistQueryService;
 

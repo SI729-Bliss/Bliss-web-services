@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.PUT})
 @RestController
 @RequestMapping(value="/api/v1/companies", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Companies", description = "Company Management Endpoints")
+@Tag(name = "Profiles Management", description = "Profiles Management Endpoints")
 public class CompanyController {
     private final CompanyQueryService companyQueryService;
     private final CompanyCommandService companyCommandService;
