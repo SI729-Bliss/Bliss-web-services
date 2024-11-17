@@ -1,5 +1,6 @@
 package com.beautyservices.bliss.services.domain.model.entities;
 
+import com.beautyservices.bliss.services.domain.model.aggregates.Service;
 import com.beautyservices.bliss.services.domain.model.commands.CreateServiceDetailCommand;
 import com.beautyservices.bliss.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
@@ -18,10 +19,14 @@ public class ServiceDetail extends AuditableAbstractAggregateRoot<ServiceDetail>
     @Column(name = "service_id", columnDefinition = "smallint", nullable = false)
     private Long serviceId;
 
+    @ManyToOne
+    @JoinColumn(name = "service", insertable = false, updatable = false)
+    private Service service;
+
     @Getter
     @NotNull
     @NotBlank
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(name = "detail", length = 50, nullable = false)
     private String detail;
 
     @Getter
