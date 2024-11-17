@@ -18,8 +18,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/reviews")
-@Tag(name = "Review Management", description = "Endpoints for managing reviews")
+@RequestMapping("/api/v1/reviews")
+@Tag(name = "Reviews", description = "Endpoints for managing reviews")
 public class ReviewController {
 
     private final ReviewFacade reviewFacade;
