@@ -9,6 +9,10 @@ import com.beautyservices.bliss.payment.interfaces.rest.resources.CreatePaymentR
 import com.beautyservices.bliss.payment.interfaces.rest.resources.PaymentResource;
 import com.beautyservices.bliss.payment.interfaces.rest.transform.CreatePaymentCommandFromResourceAssembler;
 import com.beautyservices.bliss.payment.interfaces.rest.transform.PaymentResourceFromEntityAssembler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,6 +59,26 @@ public class PaymentController {
      * @see CreatePaymentResource
      * @see PaymentResource
      */
+    @Operation(summary = "Create a payment",
+            description = "Create a payment from database",
+            operationId = "createPayment",
+            responses={
+                @ApiResponse(responseCode = "201",
+                        description = "Payment created",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = PaymentResource.class)
+                        )
+                ),
+                @ApiResponse(responseCode = "400",
+                        description = "Bad request",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = PaymentResource.class)
+                        )
+                )
+        }
+    )
     @PostMapping
     public ResponseEntity<PaymentResource> createPayment(@RequestBody CreatePaymentResource createPaymentResource) {
         var createPaymentCommand = CreatePaymentCommandFromResourceAssembler.toCommandFromResource(createPaymentResource);
@@ -74,6 +98,26 @@ public class PaymentController {
      * @return a list of all payments
      * @see PaymentResource
      */
+    @Operation(summary = "Get all payments",
+            description = "Get all payments from database",
+            operationId = "getAllPayments",
+            responses={
+                @ApiResponse(responseCode = "200",
+                        description = "Payments found",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = PaymentResource.class)
+                        )
+                ),
+                @ApiResponse(responseCode = "400",
+                        description = "Bad request",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = PaymentResource.class)
+                        )
+                )
+        }
+    )
     @GetMapping
     public ResponseEntity<List<PaymentResource>> getAllPayments() {
         var getAllPaymentsQuery = new GetAllPaymentsQuery();
@@ -90,6 +134,26 @@ public class PaymentController {
      * @return the payment resource
      * @see PaymentResource
      */
+    @Operation(summary = "Get a payment by id",
+            description = "Get a payment by id from database",
+            operationId = "getPaymentById",
+            responses={
+                @ApiResponse(responseCode = "200",
+                        description = "Payment found",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = PaymentResource.class)
+                        )
+                ),
+                @ApiResponse(responseCode = "400",
+                        description = "Bad request",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = PaymentResource.class)
+                        )
+                )
+        }
+    )
     @GetMapping("/{paymentId}")
     public ResponseEntity<PaymentResource> getPaymentById(@PathVariable Long paymentId) {
         var getPaymentByIdQuery = new GetPaymentByIdQuery(paymentId);
