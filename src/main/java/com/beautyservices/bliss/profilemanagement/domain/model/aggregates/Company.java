@@ -32,14 +32,16 @@ public class Company extends AuditableAbstractAggregateRoot<Company> {
     })
     private PhoneNumber phoneNumber;
 
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "address", column = @Column(name = "address", nullable = false))
     })
     private Address address;
 
+    @Getter
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = true)
     private double rating;
     // Getters
     public String getEmail() {
@@ -54,29 +56,40 @@ public class Company extends AuditableAbstractAggregateRoot<Company> {
         return phoneNumber.number();
     }
 
-    public double getRating() {
-        return rating;
+    public void setEmail(String email) {this.email = new Email(email);}
+
+    public void setAddress(String address) {this.address = new Address(address);}
+
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = new PhoneNumber(phoneNumber);
     }
+
+
+
     // Constructor vacío requerido por JPA
     public Company() {}
 
-    public Company(String name, String email, String phoneNumber, String address) {
+    public Company(String name, String email, String phoneNumber, String address, double rating) {
         this.name = name;
         this.email = new Email(email);
         this.phoneNumber = new PhoneNumber(phoneNumber);
         this.address = new Address(address);
+        this.rating = rating;
     }
 
 
-    public Company updateInformation(String name, String email, String phoneNumber, String address) {
+    public Company updateInformation(String name, String email, String phoneNumber, String address, double rating) {
         this.name = name;
         this.email = new Email(email);
         this.phoneNumber = new PhoneNumber(phoneNumber);
         this.address = new Address(address);
+        this.rating = rating;
         return this;
     }
     public Company(Long id) {
         this.id = id;
     }
+
 
 }
