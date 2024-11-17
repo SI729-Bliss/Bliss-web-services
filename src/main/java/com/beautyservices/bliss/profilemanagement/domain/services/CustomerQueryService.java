@@ -9,4 +9,5 @@ public interface CustomerQueryService {
     Optional<Customer> handle(GetCustomerByIdQuery query);
 
     // Métodos adicionales de consulta específicos para Customer, si es necesario
+    //si es necesario se pueden agregar más métodos de consulta
 }

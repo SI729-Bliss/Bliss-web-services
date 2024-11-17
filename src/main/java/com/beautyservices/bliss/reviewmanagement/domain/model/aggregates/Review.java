@@ -1,43 +1,39 @@
+// Review.java
 package com.beautyservices.bliss.reviewmanagement.domain.model.aggregates;
 
-import com.beautyservices.bliss.reviewmanagement.domain.model.valueobjects.Punctuation;
+import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.Reservation;
+import com.beautyservices.bliss.reviewmanagement.domain.model.valueobjects.ReservationInfo;
 import com.beautyservices.bliss.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-
-@Entity
-@Table(name = "reviews")
-@Schema(description = "Entidad representativa de una reseña")
 @Getter
 @Setter
+@Entity
+@Table(name = "reviews")
 public class Review extends AuditableAbstractAggregateRoot<Review> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Embedded
-    private Punctuation punctuation;
 
-    @Column(nullable = false)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = false)
+    private Reservation reservation;
+
+    private int punctuation;
     private String comment;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdDate;
+    @Embedded
+    private ReservationInfo reservationInfo;
 
-    @Column(nullable = false)
-    private Long reservationId;
 
-    @Column(nullable = false)
-    private String images;
+    public Review() {}
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
+
+    public Review(Reservation reservation, int punctuation, String comment, ReservationInfo reservationInfo) {
+        this.reservation = reservation;
+        this.punctuation = punctuation;
+        this.comment = comment;
+        this.reservationInfo = reservationInfo;
     }
 }
