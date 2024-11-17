@@ -11,7 +11,8 @@ public class CreateReviewCommandFromResourceAssembler {
         return new CreateReviewCommand(
                 resource.reservationId(),
                 resource.punctuation(),
-                resource.comment()
+                resource.comment(),
+                resource.imageUrls() // Include the imageUrls field
         );
     }
 }
