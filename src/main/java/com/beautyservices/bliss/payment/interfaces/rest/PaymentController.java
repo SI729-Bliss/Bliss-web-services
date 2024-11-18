@@ -31,9 +31,10 @@ import java.util.stream.Collectors;
  *     It contains the endpoints for creating and retrieving payments.
  *     The class uses the PaymentCommandService and PaymentQueryService to handle the commands and queries.
  *     <ul>
- *         <li>POST /api/v1/payments/payment/ - Create a payment</li>
- *         <li>GET /api/v1/payments/payment/ - Get all payments</li>
- *         <li>GET /api/v1/payments/payment/{paymentId} - Get a payment by id</li>
+ *         <li>POST /api/v1/payments/ - Create a payment</li>
+ *         <li>GET /api/v1/payments/ - Get all payments</li>
+ *         <li>GET /api/v1/payments/{paymentId} - Get a payment by id</li>
+ *         <li>GET /api/v1/payments/{reservationId} - Find payments by reservation id</li>
  *     </ul>
  * </p>
  */
