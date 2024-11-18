@@ -85,6 +85,34 @@ public class ServicesController {
         return new ResponseEntity<>(serviceResource, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Fetch a service by id",
+            description = "Fetch a service by service id",
+            operationId = "getServiceById",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = DetailResource.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/{serviceId}")
+    public ResponseEntity<ServiceResource> getServiceById(@PathVariable Long serviceId) {
+        var getServiceByIdQuery = new GetServiceByIdQuery(serviceId);
+        var optionalService = this.entServiceQueryService.handle(getServiceByIdQuery);
+
+        if (optionalService.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var serviceResource = ServiceResourceFromEntityAssembler.toResourceFromEntity(optionalService.get());
+        return ResponseEntity.ok(serviceResource);
+    }
+
+
     // Get all services
     @Operation(
             summary = "Fetch all services",
