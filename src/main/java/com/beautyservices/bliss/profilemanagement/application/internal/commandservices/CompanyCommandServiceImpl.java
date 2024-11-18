@@ -2,8 +2,10 @@ package com.beautyservices.bliss.profilemanagement.application.internal.commands
 
 import com.beautyservices.bliss.profilemanagement.application.internal.outboundservices.acl.ExternalIamService;
 import com.beautyservices.bliss.profilemanagement.domain.model.aggregates.Company;
+import com.beautyservices.bliss.profilemanagement.domain.model.aggregates.Customer;
 import com.beautyservices.bliss.profilemanagement.domain.model.commands.CreateCompanyCommand;
 import com.beautyservices.bliss.profilemanagement.domain.model.commands.UpdateCompanyCommand;
+import com.beautyservices.bliss.profilemanagement.domain.model.commands.UpdateCustomerCommand;
 import com.beautyservices.bliss.profilemanagement.domain.services.CompanyCommandService;
 import com.beautyservices.bliss.profilemanagement.infrastructure.persistence.jpa.repositories.CompanyRepository;
 import org.springframework.stereotype.Service;
@@ -25,31 +27,21 @@ public class CompanyCommandServiceImpl implements CompanyCommandService {
     @Override
     public Optional<Company> handle(UpdateCompanyCommand command) {
 
-        // Validate if profile already exists with the same name
-        var optionalUsername = this.externalIamService.fetchUserIdByUsername(command.email());
+        var customerId = command.id();
 
-        if (optionalUsername.isPresent()) {
-            this.companyRepository.findById(optionalUsername.get().getId()).ifPresent(student -> {
-                throw new IllegalArgumentException("Company already exists");
-            });
+        if(!this.companyRepository.existsById(customerId)) {
+            throw new IllegalArgumentException("Customer with id " + customerId + " does not exist");
         }
-        var companyId = command.id();
-
-        if (!this.companyRepository.existsById(companyId)) {
-            throw new IllegalArgumentException("company with id " + companyId + " does not exist");
-        }
-
-        var companyToUpdate = this.companyRepository.findById(companyId).get();
-        companyToUpdate.updateInformation(command.name(), command.email(), command.address(), command.phoneNumber(), command.rating());
+        var customerToUpdate = this.companyRepository.findById(customerId).get();
+        customerToUpdate.updateInformation(command.name(), command.email(), command.address(), command.phoneNumber(), command.rating());
 
         try {
-            var updatedCompany = this.companyRepository.save(companyToUpdate);
-            return Optional.of(updatedCompany);
+            var updatedCustomer = this.companyRepository.save(customerToUpdate);
+            return Optional.of(updatedCustomer);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error while updating company profile: " + e.getMessage());
+            throw new IllegalArgumentException("Error while updating customer profile: " + e.getMessage());
         }
     }
-
     @Override
     public Long handle(CreateCompanyCommand command) {
         if (this.companyRepository.existsById(command.id())) {
