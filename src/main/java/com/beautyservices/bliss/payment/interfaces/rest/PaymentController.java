@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  */
 @CrossOrigin(origins = "*", methods = { RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE })
 @RestController
-@RequestMapping(value = "/api/v1/payments/payment/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/payments", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Payment", description = "Payment API")
 public class PaymentController {
 
@@ -192,7 +192,7 @@ public class PaymentController {
                 )
         }
     )
-    @GetMapping("/payment/{reservationId}")
+    @GetMapping("/{reservationId}")
     public ResponseEntity<PaymentResource> getPaymentByReservationId(@RequestParam(name = "reservationId") Long reservationId) {
         if(reservationId == null) return ResponseEntity.badRequest().build();
         ReservationId id = new ReservationId(reservationId);
