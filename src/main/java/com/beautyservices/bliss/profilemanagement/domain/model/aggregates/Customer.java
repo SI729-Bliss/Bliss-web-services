@@ -1,5 +1,6 @@
 package com.beautyservices.bliss.profilemanagement.domain.model.aggregates;
 
+import com.beautyservices.bliss.profilemanagement.domain.model.commands.CreateCustomerCommand;
 import com.beautyservices.bliss.profilemanagement.domain.model.valueobjects.Address;
 import com.beautyservices.bliss.profilemanagement.domain.model.valueobjects.Email;
 import com.beautyservices.bliss.profilemanagement.domain.model.valueobjects.PhoneNumber;
@@ -66,5 +67,12 @@ public class Customer extends AuditableAbstractAggregateRoot<Customer> {
         this.phoneNumber = new PhoneNumber(phoneNumber);
         this.address = new Address(address);
         return this;
+    }
+
+    public Customer (CreateCustomerCommand command){
+        this.name = command.name();
+        this.email = new Email(command.email());
+        this.phoneNumber = new PhoneNumber(command.phoneNumber());
+        this.address = new Address(command.address());
     }
 }
