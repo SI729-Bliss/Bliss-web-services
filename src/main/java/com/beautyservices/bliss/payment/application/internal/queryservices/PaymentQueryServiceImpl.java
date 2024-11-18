@@ -3,6 +3,7 @@ package com.beautyservices.bliss.payment.application.internal.queryservices;
 import com.beautyservices.bliss.payment.domain.model.aggregates.Payment;
 import com.beautyservices.bliss.payment.domain.model.queries.GetAllPaymentsQuery;
 import com.beautyservices.bliss.payment.domain.model.queries.GetPaymentByIdQuery;
+import com.beautyservices.bliss.payment.domain.model.queries.GetPaymentByReservationIdQuery;
 import com.beautyservices.bliss.payment.domain.model.queries.GetPaymentsByCustomerIdQuery;
 import com.beautyservices.bliss.payment.domain.services.PaymentQueryService;
 import com.beautyservices.bliss.payment.infrastructure.jpa.repositories.PaymentRepository;
@@ -33,5 +34,10 @@ public class PaymentQueryServiceImpl implements PaymentQueryService {
     @Override
     public List<Payment> handle(GetAllPaymentsQuery query) {
         return paymentRepository.findAll();
+    }
+
+    @Override
+    public Optional<Payment> handle(GetPaymentByReservationIdQuery query) {
+        return this.paymentRepository.findByReservationId(query.reservationId());
     }
 }

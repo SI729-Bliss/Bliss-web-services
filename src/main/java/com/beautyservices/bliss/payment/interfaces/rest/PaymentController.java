@@ -2,6 +2,8 @@ package com.beautyservices.bliss.payment.interfaces.rest;
 
 import com.beautyservices.bliss.payment.domain.model.queries.GetAllPaymentsQuery;
 import com.beautyservices.bliss.payment.domain.model.queries.GetPaymentByIdQuery;
+import com.beautyservices.bliss.payment.domain.model.queries.GetPaymentByReservationIdQuery;
+import com.beautyservices.bliss.payment.domain.model.valueobjects.ReservationId;
 import com.beautyservices.bliss.payment.domain.services.PaymentCommandService;
 import com.beautyservices.bliss.payment.domain.services.PaymentQueryService;
 import com.beautyservices.bliss.payment.infrastructure.jpa.repositories.PaymentRepository;
@@ -164,5 +166,41 @@ public class PaymentController {
         return ResponseEntity.ok(paymentResource);
     }
 
-
+    /**
+     * Find payments by reservation id
+     * @param reservationId the id of the reservation to retrieve payment
+     * @return a payment
+     * @see PaymentResource
+     */
+    @Operation(summary = "Find payments by reservation id",
+            description = "Find payments by reservation id from database",
+            operationId = "findPaymentsByReservationId",
+            responses={
+                @ApiResponse(responseCode = "201",
+                        description = "Payments found",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = PaymentResource.class)
+                        )
+                ),
+                @ApiResponse(responseCode = "400",
+                        description = "Bad request",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = PaymentResource.class)
+                        )
+                )
+        }
+    )
+    @GetMapping("/payment/{reservationId}")
+    public ResponseEntity<PaymentResource> getPaymentByReservationId(@RequestParam(name = "reservationId") Long reservationId) {
+        if(reservationId == null) return ResponseEntity.badRequest().build();
+        ReservationId id = new ReservationId(reservationId);
+        var getPaymentByReservationIdQuery = new GetPaymentByReservationIdQuery(id);
+        var optionalPayment = this.paymentQueryService.handle(getPaymentByReservationIdQuery);
+        if (optionalPayment.isEmpty())
+            return ResponseEntity.badRequest().build();
+        var paymentResource = PaymentResourceFromEntityAssembler.toResourceFromEntity(optionalPayment.get());
+        return ResponseEntity.ok(paymentResource);
+    }
 }

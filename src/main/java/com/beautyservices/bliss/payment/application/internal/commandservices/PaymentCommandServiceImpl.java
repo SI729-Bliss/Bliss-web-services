@@ -31,7 +31,6 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
     @Override
     public Long handle(CreatePaymentCommand command) {
 
-
         var paymentMethod = this.paymentMethodRepository.findByName(PaymentMethods.valueOf(command.paymentMethod()))
                 .orElseThrow(() -> new IllegalArgumentException("PaymentMethod with name " + command.paymentMethod() + " not found"));
 
@@ -40,6 +39,7 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
 
         var invoiceType = this.invoiceTypeRepository.findByName(InvoiceTypes.valueOf(command.invoiceType()))
                 .orElseThrow(() -> new IllegalArgumentException("InvoiceType with name " + command.invoiceType() + " not found"));
+
 
         var payment = new Payment(command.amount(), paymentMethod, status,invoiceType, command.reservationId(), command.customerId());
 
