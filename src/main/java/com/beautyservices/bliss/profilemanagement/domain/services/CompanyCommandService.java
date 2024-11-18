@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface CompanyCommandService {
     Optional<Company> handle(UpdateCompanyCommand command);
-    Optional <Company> handle(CreateCompanyCommand command);
+    Long handle(CreateCompanyCommand command);
 }

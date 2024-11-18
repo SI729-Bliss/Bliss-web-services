@@ -51,27 +51,18 @@ public class CompanyCommandServiceImpl implements CompanyCommandService {
     }
 
     @Override
-    public Optional<Company> handle(CreateCompanyCommand command) {
-        // Validate if profile already exists with the same name
-        var optionalUsername = this.externalIamService.fetchUserIdByUsername(command.email());
-        if (optionalUsername.isPresent()) {
-            this.companyRepository.findById(optionalUsername.get().getId()).ifPresent(student -> {
-                throw new IllegalArgumentException("Company already exists");
-            });
-        }
-
-        // Create profile
-        optionalUsername = this.externalIamService.createUsername(command.email(), command.password());
-        if (optionalUsername.isEmpty()) {
-            throw new IllegalArgumentException("Unable to create profile");
+    public Long handle(CreateCompanyCommand command) {
+        if (this.companyRepository.existsById(command.id())) {
+            throw new IllegalArgumentException("Company with id " + command.id() + " already exists");
         }
         var company = new Company(command);
         try {
             this.companyRepository.save(company);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error while saving course assign: " + e.getMessage());
+            throw new IllegalArgumentException("Error while saving company profile: " + e.getMessage());
         }
-
         return company.getId();
     }
+
+
 }

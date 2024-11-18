@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface CustomerCommandService {
     Optional<Customer> handle(UpdateCustomerCommand command);
-    Optional <Customer> handle(CreateCustomerCommand command);
+    Long handle(CreateCustomerCommand command);
 }

@@ -2,6 +2,7 @@ package com.beautyservices.bliss.profilemanagement.application.internal.commands
 
 
 import com.beautyservices.bliss.profilemanagement.domain.model.aggregates.Customer;
+import com.beautyservices.bliss.profilemanagement.domain.model.commands.CreateCustomerCommand;
 import com.beautyservices.bliss.profilemanagement.domain.model.commands.UpdateCustomerCommand;
 import com.beautyservices.bliss.profilemanagement.domain.services.CustomerCommandService;
 import com.beautyservices.bliss.profilemanagement.infrastructure.persistence.jpa.repositories.CustomerRepository;
@@ -37,4 +38,21 @@ public class CustomerCommandServiceImpl implements CustomerCommandService {
             throw new IllegalArgumentException("Error while updating customer profile: " + e.getMessage());
         }
     }
+
+    @Override
+    public Long handle(CreateCustomerCommand command) {
+        if(this.customerRepository.existsById(command.id())) {
+            throw new IllegalArgumentException("Customer with id " + command.id() + " already exists");
+        }
+        var customer = new Customer(command);
+        try {
+            this.customerRepository.save(customer);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while saving customer profile: " + e.getMessage());
+        }
+        return customer.getId();
+
+    }
+
+
 }
