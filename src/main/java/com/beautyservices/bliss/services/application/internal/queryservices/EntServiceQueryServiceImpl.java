@@ -3,6 +3,7 @@ package com.beautyservices.bliss.services.application.internal.queryservices;
 import com.beautyservices.bliss.services.domain.model.aggregates.Service;
 import com.beautyservices.bliss.services.domain.model.queries.GetAllServicesQuery;
 import com.beautyservices.bliss.services.domain.model.queries.GetServiceByIdQuery;
+import com.beautyservices.bliss.services.domain.model.queries.GetServicesByCategoryQuery;
 import com.beautyservices.bliss.services.domain.model.queries.GetServicesBySalonIdQuery;
 import com.beautyservices.bliss.services.domain.services.EntServiceQueryService;
 import com.beautyservices.bliss.services.infrastructure.persistence.jpa.repositories.ServiceRepository;
@@ -33,6 +34,11 @@ public class EntServiceQueryServiceImpl implements EntServiceQueryService {
     @Override
     public List<Service> handle(GetServicesBySalonIdQuery query) {
         return this.serviceRepository.findBySalonId(query.beautySalonId());
+    }
+
+    @Override
+    public List<Service> handle(GetServicesByCategoryQuery query) {
+        return this.serviceRepository.findByCategory(query.category());
     }
 
 }

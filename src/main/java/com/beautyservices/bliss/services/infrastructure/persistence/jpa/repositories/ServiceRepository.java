@@ -17,4 +17,6 @@ public interface ServiceRepository extends JpaRepository<Service, Long> {
     // List by salonId
     List<Service> findBySalonId(BeautySalonId beautySalonId);
 
+    // List by category
+    List<Service> findByCategory(String category);
 }

@@ -1,5 +1,6 @@
 package com.beautyservices.bliss.services.interfaces.rest;
 
+import com.beautyservices.bliss.services.domain.model.queries.GetServicesByCategoryQuery;
 import com.beautyservices.bliss.services.domain.model.valueobjects.BeautySalonId;
 import com.beautyservices.bliss.services.interfaces.rest.resources.CreateDetailResource;
 import com.beautyservices.bliss.services.interfaces.rest.resources.DetailResource;
@@ -144,6 +145,39 @@ public class ServicesController {
 
         return ResponseEntity.ok(servicesResources);
     }
+
+    @Operation(
+            summary = "Fetch services by category",
+            description = "Fetch all services by category",
+            operationId = "getServicesByCategory",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ServiceResource.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/category")
+    public ResponseEntity<List<ServiceResource>> getByCategory(@RequestParam(name = "category") String category) {
+
+        if (category == null ) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var getServicesByCategoryQuery = new GetServicesByCategoryQuery(category);
+        var services = this.entServiceQueryService.handle(getServicesByCategoryQuery);
+
+        var servicesResources = services.stream()
+                .map(ServiceResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(servicesResources);
+    }
+
 
     // Update Service
     @Operation(
