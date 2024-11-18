@@ -20,7 +20,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping(value = "/api/v1/bookings", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Booking", description = "Booking API")
@@ -118,5 +117,17 @@ public class BookingController {
         bookingCommandService.handle(new DeleteBookingCommand(id));
         return ResponseEntity.noContent().build();
     }
-}
 
+    @Operation(summary = "Get booking by ID", description = "Returns a booking by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Booking found"),
+            @ApiResponse(responseCode = "404", description = "Booking not found")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<BookingResource> getBookingById(
+            @Parameter(description = "ID of the booking to be retrieved") @PathVariable Long id) {
+        var booking = bookingQueryService.handle(new GetBookingByIdQuery(id));
+        return booking.map(b -> ResponseEntity.ok(BookingResourceAssembler.toResource(b)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+}
