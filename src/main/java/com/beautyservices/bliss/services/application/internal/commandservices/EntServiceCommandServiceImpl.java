@@ -64,7 +64,7 @@ public class EntServiceCommandServiceImpl implements EntServiceCommandService {
         var serviceToUpdate = this.serviceRepository.findById(serviceId).get();
 
         // Update using Aggregate
-        serviceToUpdate.updateServiceInformation(command.name(), command.imageUrl(), command.description(), command.basePrice());
+        serviceToUpdate.updateServiceInformation(command.name(),command.category() ,command.imageUrl(), command.description(), command.basePrice());
 
         try {
             var updatedService = this.serviceRepository.save(serviceToUpdate);

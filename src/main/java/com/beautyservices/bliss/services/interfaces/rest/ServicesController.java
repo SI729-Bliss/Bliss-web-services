@@ -1,5 +1,6 @@
 package com.beautyservices.bliss.services.interfaces.rest;
 
+import com.beautyservices.bliss.services.domain.model.queries.GetServicesByCategoryQuery;
 import com.beautyservices.bliss.services.domain.model.valueobjects.BeautySalonId;
 import com.beautyservices.bliss.services.interfaces.rest.resources.CreateDetailResource;
 import com.beautyservices.bliss.services.interfaces.rest.resources.DetailResource;
@@ -84,6 +85,34 @@ public class ServicesController {
         return new ResponseEntity<>(serviceResource, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Fetch a service by id",
+            description = "Fetch a service by service id",
+            operationId = "getServiceById",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = DetailResource.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/{serviceId}")
+    public ResponseEntity<ServiceResource> getServiceById(@PathVariable Long serviceId) {
+        var getServiceByIdQuery = new GetServiceByIdQuery(serviceId);
+        var optionalService = this.entServiceQueryService.handle(getServiceByIdQuery);
+
+        if (optionalService.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var serviceResource = ServiceResourceFromEntityAssembler.toResourceFromEntity(optionalService.get());
+        return ResponseEntity.ok(serviceResource);
+    }
+
+
     // Get all services
     @Operation(
             summary = "Fetch all services",
@@ -144,6 +173,39 @@ public class ServicesController {
 
         return ResponseEntity.ok(servicesResources);
     }
+
+    @Operation(
+            summary = "Fetch services by category",
+            description = "Fetch all services by category",
+            operationId = "getServicesByCategory",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ServiceResource.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/category")
+    public ResponseEntity<List<ServiceResource>> getByCategory(@RequestParam(name = "category") String category) {
+
+        if (category == null ) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var getServicesByCategoryQuery = new GetServicesByCategoryQuery(category);
+        var services = this.entServiceQueryService.handle(getServicesByCategoryQuery);
+
+        var servicesResources = services.stream()
+                .map(ServiceResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(servicesResources);
+    }
+
 
     // Update Service
     @Operation(

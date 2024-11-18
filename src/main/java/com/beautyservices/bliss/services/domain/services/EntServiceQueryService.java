@@ -4,6 +4,7 @@ package com.beautyservices.bliss.services.domain.services;
 import com.beautyservices.bliss.services.domain.model.aggregates.Service;
 import com.beautyservices.bliss.services.domain.model.queries.GetAllServicesQuery;
 import com.beautyservices.bliss.services.domain.model.queries.GetServiceByIdQuery;
+import com.beautyservices.bliss.services.domain.model.queries.GetServicesByCategoryQuery;
 import com.beautyservices.bliss.services.domain.model.queries.GetServicesBySalonIdQuery;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface EntServiceQueryService {
     Optional<Service> handle(GetServiceByIdQuery query);
     // By salon Id
     List<Service> handle(GetServicesBySalonIdQuery query);
+    List<Service> handle(GetServicesByCategoryQuery query);
 }
