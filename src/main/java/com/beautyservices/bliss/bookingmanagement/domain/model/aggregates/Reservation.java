@@ -44,7 +44,7 @@ public class Reservation {
     private LocalDate bookingDate;
 
     @NotNull
-    private LocalTime bookingTime;
+    private String bookingTime;
 
     @NotNull
     private boolean bookingStatus;
@@ -61,7 +61,7 @@ public class Reservation {
         this.customerId = command.customerId();
         this.service = new Service(command.serviceId());
         this.company = new Company(command.companyId());
-        this.bookingDate = command.bookingDate();
+        this.bookingDate = command.bookingDate( );
         this.bookingTime = command.bookingTime();
         this.bookingStatus = command.bookingStatus();
         this.requirements = command.requirements();
@@ -75,6 +75,7 @@ public class Reservation {
     public void update(UpdateBookingCommand command) {
         this.bookingStatus = command.bookingStatus();
         this.requirements = command.requirements();
+        this.totalAmount = command.totalAmount();
     }
 
     // New methods to get service and company IDs
@@ -85,4 +86,7 @@ public class Reservation {
     public Long getCompanyId() {
         return company.getId();
     }
+
+
+
 }

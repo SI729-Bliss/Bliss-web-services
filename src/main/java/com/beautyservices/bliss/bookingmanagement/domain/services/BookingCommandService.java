@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface BookingCommandService {
     Long  handle(CreateBookingCommand command);
-    Long  handle(UpdateBookingCommand command);
+    Optional<Reservation> handle(UpdateBookingCommand command);
     void handle(DeleteBookingCommand command);
 }

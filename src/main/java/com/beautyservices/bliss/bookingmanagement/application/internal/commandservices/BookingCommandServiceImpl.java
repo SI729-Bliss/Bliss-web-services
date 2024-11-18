@@ -33,20 +33,19 @@ public class BookingCommandServiceImpl implements BookingCommandService {
     }
 
     @Override
-    public Long handle(UpdateBookingCommand command) {
-        Optional<Reservation> reservationOptional = reservationRepository.findById(command.id());
-        if (reservationOptional.isPresent()) {
-            Reservation reservation = reservationOptional.get();
-            reservation.update(command);
-            try {
-                reservationRepository.save(reservation);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Error while updating reservation: " + e.getMessage());
-            }
-            return Optional.of(reservation);
+    public Optional<Reservation> handle(UpdateBookingCommand command) {
+        var reservationId = command.id();
+        var reservationToUpdate = this.reservationRepository.findById(reservationId).orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+        reservationToUpdate.update(command);
+
+        try {
+            var updatedReservation = this.reservationRepository.save(reservationToUpdate);
+            return Optional.of(updatedReservation);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating reservation: " + e.getMessage());
         }
-        return Optional.empty();
     }
+
 
     @Override
     public void handle(DeleteBookingCommand command) {
