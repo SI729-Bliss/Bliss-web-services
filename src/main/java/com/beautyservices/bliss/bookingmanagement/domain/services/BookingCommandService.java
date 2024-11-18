@@ -8,7 +8,7 @@ import com.beautyservices.bliss.bookingmanagement.domain.model.commands.DeleteBo
 import java.util.Optional;
 
 public interface BookingCommandService {
-    Optional<Reservation> handle(CreateBookingCommand command);
-    Optional<Reservation> handle(UpdateBookingCommand command);
+    Long  handle(CreateBookingCommand command);
+    Long  handle(UpdateBookingCommand command);
     void handle(DeleteBookingCommand command);
 }

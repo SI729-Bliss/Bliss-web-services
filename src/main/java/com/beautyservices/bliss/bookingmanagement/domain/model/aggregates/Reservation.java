@@ -20,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name="reservations")
 public class Reservation {
 
     @Id
@@ -52,10 +53,8 @@ public class Reservation {
     private List<String> requirements;
 
     @NotNull
-    private BigDecimal totalPrice;
+    private float totalAmount;
 
-    @Embedded
-    private ServiceInfo serviceInfo;
 
     // Constructor for CreateBookingCommand
     public Reservation(CreateBookingCommand command) {
@@ -66,8 +65,7 @@ public class Reservation {
         this.bookingTime = command.bookingTime();
         this.bookingStatus = command.bookingStatus();
         this.requirements = command.requirements();
-        this.totalPrice = command.totalPrice();
-        this.serviceInfo = new ServiceInfo(command.serviceInfo().basePrice());
+        this.totalAmount = command.totalAmount();
     }
 
     // Default constructor
@@ -77,23 +75,14 @@ public class Reservation {
     public void update(UpdateBookingCommand command) {
         this.bookingStatus = command.bookingStatus();
         this.requirements = command.requirements();
-        this.totalPrice = command.totalPrice();
-        this.serviceInfo = new ServiceInfo(command.serviceInfo().basePrice());
     }
 
-    @Embeddable
-    public static class ServiceInfo {
-        @NotNull
-        private BigDecimal basePrice;
+    // New methods to get service and company IDs
+    public Long getServiceId() {
+        return service.getId();
+    }
 
-        public ServiceInfo(BigDecimal basePrice) {
-            this.basePrice = basePrice;
-        }
-
-        public ServiceInfo() {}
-
-        public BigDecimal getBasePrice() {
-            return basePrice;
-        }
+    public Long getCompanyId() {
+        return company.getId();
     }
 }

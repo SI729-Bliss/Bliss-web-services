@@ -42,7 +42,7 @@ public class BookingController {
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<List<BookingResource>> getBookingsByCustomerId(
             @Parameter(description = "ID of the customer whose bookings are to be retrieved") @PathVariable Long customerId) {
-        List<BookingResource> resources = bookingQueryService.handle(new GetBookingsByCustomerIdQuery(customerId))
+        List<BookingResource> resources = bookingQueryService.handle(new GetReservationsByCustomerIdQuery(customerId))
                 .stream()
                 .map(BookingResourceAssembler::toResource)
                 .collect(Collectors.toList());
@@ -57,7 +57,7 @@ public class BookingController {
     @GetMapping("/service/{serviceId}")
     public ResponseEntity<List<BookingResource>> getBookingsByServiceId(
             @Parameter(description = "ID of the service whose bookings are to be retrieved") @PathVariable Long serviceId) {
-        List<BookingResource> resources = bookingQueryService.handle(new GetBookingsByServiceIdQuery(serviceId))
+        List<BookingResource> resources = bookingQueryService.handle(new GetReservationsByServiceIdQuery(serviceId))
                 .stream()
                 .map(BookingResourceAssembler::toResource)
                 .collect(Collectors.toList());
@@ -72,7 +72,7 @@ public class BookingController {
     @GetMapping("/company/{companyId}")
     public ResponseEntity<List<BookingResource>> getBookingsByCompanyId(
             @Parameter(description = "ID of the company whose bookings are to be retrieved") @PathVariable Long companyId) {
-        List<BookingResource> resources = bookingQueryService.handle(new GetBookingsByCompanyIdQuery(companyId))
+        List<BookingResource> resources = bookingQueryService.handle(new GetReservationsByCompanyIdQuery(companyId))
                 .stream()
                 .map(BookingResourceAssembler::toResource)
                 .collect(Collectors.toList());
@@ -86,7 +86,7 @@ public class BookingController {
     })
     @GetMapping
     public ResponseEntity<List<BookingResource>> getAllBookings() {
-        List<BookingResource> resources = bookingQueryService.handle(new GetAllBookingsQuery())
+        List<BookingResource> resources = bookingQueryService.handle(new GetAllReservationsQuery())
                 .stream()
                 .map(BookingResourceAssembler::toResource)
                 .collect(Collectors.toList());
