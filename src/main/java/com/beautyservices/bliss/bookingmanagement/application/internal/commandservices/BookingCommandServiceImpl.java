@@ -1,11 +1,12 @@
 package com.beautyservices.bliss.bookingmanagement.application.internal.commandservices;
 
-import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.BookingService;
+import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.Reservation;
 import com.beautyservices.bliss.bookingmanagement.domain.model.commands.CreateBookingCommand;
-import com.beautyservices.bliss.bookingmanagement.domain.model.commands.DeleteBookingCommand;
 import com.beautyservices.bliss.bookingmanagement.domain.model.commands.UpdateBookingCommand;
+import com.beautyservices.bliss.bookingmanagement.domain.model.commands.DeleteBookingCommand;
 import com.beautyservices.bliss.bookingmanagement.domain.services.BookingCommandService;
 import com.beautyservices.bliss.bookingmanagement.infrastructure.persistence.jpa.repositories.BookingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,66 +14,42 @@ import java.util.Optional;
 @Service
 public class BookingCommandServiceImpl implements BookingCommandService {
 
-    private final BookingRepository bookingRepository;
-
-    public BookingCommandServiceImpl(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
+    @Autowired
+    private BookingRepository reservationRepository;
 
     @Override
-    public BookingService handle(CreateBookingCommand command) {
-        BookingService booking = new BookingService();
-        booking.setCustomerId(command.customerId());
-        booking.setServiceId(command.serviceId());
-        booking.setDate(command.date());
-        booking.setTime(command.time());
-        booking.setStatus(command.status());
-        booking.setFullName(command.fullName());
-        booking.setEmail(command.email());
-        booking.setService(command.service());
-        booking.setAvailability(command.availability());
-        booking.setMessage(String.valueOf(command.message()));
-        booking.setRequirements(command.requirements());
-        return bookingRepository.save(booking);
-    }
-
-    @Override
-    public Optional<BookingService> handle(UpdateBookingCommand command) {
-        var bookingId = command.id();
-
-        if (!bookingRepository.existsById((Long) bookingId)) {
-            throw new IllegalArgumentException("Booking with id " + bookingId + " does not exist");
-        }
-
-        var bookingToUpdate = bookingRepository.findById((Long) bookingId).get();
-        bookingToUpdate.setCustomerId(command.customerId());
-        bookingToUpdate.setServiceId(command.serviceId());
-        bookingToUpdate.setDate(command.date());
-        bookingToUpdate.setTime(command.time());
-        bookingToUpdate.setStatus(command.status());
-        bookingToUpdate.setFullName(command.fullName());
-        bookingToUpdate.setEmail(command.email());
-        bookingToUpdate.setService(command.service());
-        bookingToUpdate.setAvailability(command.availability());
-        bookingToUpdate.setMessage(String.valueOf(command.message()));
-        bookingToUpdate.setRequirements(command.requirements());
-
+    public Optional<Reservation> handle(CreateBookingCommand command) {
+        Reservation reservation = new Reservation(command);
         try {
-            var updatedBooking = bookingRepository.save(bookingToUpdate);
-            return Optional.of(updatedBooking);
+            reservationRepository.save(reservation);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error while updating booking: " + e.getMessage());
+            throw new IllegalArgumentException("Error while saving reservation: " + e.getMessage());
         }
+        return Optional.of(reservation);
+    }
+
+    @Override
+    public Optional<Reservation> handle(UpdateBookingCommand command) {
+        Optional<Reservation> reservationOptional = reservationRepository.findById(command.id());
+        if (reservationOptional.isPresent()) {
+            Reservation reservation = reservationOptional.get();
+            reservation.update(command);
+            try {
+                reservationRepository.save(reservation);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Error while updating reservation: " + e.getMessage());
+            }
+            return Optional.of(reservation);
+        }
+        return Optional.empty();
     }
 
     @Override
     public void handle(DeleteBookingCommand command) {
-        var bookingId = command.id();
-
-        if (!bookingRepository.existsById(bookingId)) {
-            throw new IllegalArgumentException("Booking with id " + bookingId + " does not exist");
+        try {
+            reservationRepository.deleteById(command.id());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while deleting reservation: " + e.getMessage());
         }
-
-        bookingRepository.deleteById(bookingId);
     }
 }

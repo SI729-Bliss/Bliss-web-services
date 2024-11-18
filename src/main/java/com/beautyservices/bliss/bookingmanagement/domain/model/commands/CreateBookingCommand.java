@@ -1,4 +1,6 @@
 package com.beautyservices.bliss.bookingmanagement.domain.model.commands;
 
-public record CreateBookingCommand(Long customerId, Long serviceId, String date, String time, String status, String fullName, String email, String service, String availability, String message, String requirements) {
+import java.util.List;
+
+public record CreateBookingCommand(Long customerId, Long serviceId, Long companyId, String bookingDate, String bookingTime, boolean bookingStatus, List<String> requirements) {
 }

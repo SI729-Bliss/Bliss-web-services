@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface CustomerQueryService {
     Optional<Customer> handle(GetCustomerByIdQuery query);
 
-    // Métodos adicionales de consulta específicos para Customer, si es necesario
 }

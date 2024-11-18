@@ -28,7 +28,7 @@ public class CompanyCommandServiceImpl implements CompanyCommandService {
         }
 
         var companyToUpdate = this.companyRepository.findById(companyId).get();
-        companyToUpdate.updateInformation(command.name(), command.email(), command.address(), command.phoneNumber());
+        companyToUpdate.updateInformation(command.name(), command.email(), command.address(), command.phoneNumber(), command.rating());
 
         try {
             var updatedCompany = this.companyRepository.save(companyToUpdate);

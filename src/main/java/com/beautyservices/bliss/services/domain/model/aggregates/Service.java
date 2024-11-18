@@ -1,7 +1,6 @@
 package com.beautyservices.bliss.services.domain.model.aggregates;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,9 +22,8 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "categoryId", column = @Column(name = "category_id" /*, nullable = true*/)),
+            @AttributeOverride(name = "categoryId", column = @Column(name = "category_id")),
     })
-    //TODO modify nullable base on the requeriments
     private CategoryId categoryId;
 
     @Getter
@@ -47,19 +45,18 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "beautySalonId", column = @Column(name = "beauty_salon_id" /*, nullable = true*/)),
+            @AttributeOverride(name = "beautySalonId", column = @Column(name = "beauty_salon_id")),
     })
-    //TODO modify nullable base on the requeriments
     private BeautySalonId salonId;
 
     //***************************
-    public Service(String name/*, Long catId*/, String imageUrl, String description, int basePrice /*, Long beautyId*/) {
+    public Service(String name, Long categoryId, String imageUrl, String description, int basePrice, Long salonId) {
         this.name = name;
-        //this.categoryId = new CategoryId(catId);
+        this.categoryId = new CategoryId(categoryId);
         this.imageUrl = imageUrl;
         this.description = description;
         this.basePrice = basePrice;
-        //this.salonId = new BeautySalonId(beautyId);
+        this.salonId = new BeautySalonId(salonId);
     }
 
     public Service() {}
@@ -69,15 +66,15 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
         this.categoryId = categoryId;
         this.salonId = beautySalonId;
     }
-
+    public Service(Long id) {
+        this.id = id;
+    }
     public Long getCategoryId(){
-        //return categoryId.categoryId();
-        return 0L;
+        return categoryId.categoryId();
     }
 
     public Long getSalonId(){
-        //return salonId.beautySalonId();
-        return 0L;
+        return salonId.beautySalonId();
     }
 
 
@@ -85,13 +82,14 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
     // Command
     public Service(CreateServiceCommand command){
         this.name = command.name();
-        //TODO create with category id
+        this.categoryId = new CategoryId(command.categoryId());
         this.imageUrl = command.imageUrl();
         this.description = command.description();
         this.basePrice = command.basePrice();
+        this.salonId = new BeautySalonId(command.salonId());
     }
 
-    // Update // update for category and salon id
+    // Update
     public Service updateServiceInformation(String name, String imageUrl, String description, int basePrice){
         this.name = name;
         this.imageUrl = imageUrl;
