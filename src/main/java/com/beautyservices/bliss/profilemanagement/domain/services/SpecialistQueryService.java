@@ -10,5 +10,3 @@ import java.util.List;
 public interface SpecialistQueryService {
     List<Specialist> handle(GetAllSpecialistsQuery query);
 }
-
-

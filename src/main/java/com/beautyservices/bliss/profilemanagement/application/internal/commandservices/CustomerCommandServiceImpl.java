@@ -25,7 +25,7 @@ public class CustomerCommandServiceImpl implements CustomerCommandService {
         var customerId = command.id();
 
         if(!this.customerRepository.existsById(customerId)) {
-          throw new IllegalArgumentException("Customer with id " + customerId + " does not exist");
+            throw new IllegalArgumentException("Customer with id " + customerId + " does not exist");
         }
         var customerToUpdate = this.customerRepository.findById(customerId).get();
         customerToUpdate.updateInformation(command.name(), command.email(), command.address(), command.phoneNumber());
