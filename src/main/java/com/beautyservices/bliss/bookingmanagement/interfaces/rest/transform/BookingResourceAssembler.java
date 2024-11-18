@@ -8,12 +8,18 @@ public class BookingResourceAssembler {
         BookingResource resource = new BookingResource();
         resource.setId(reservation.getId());
         resource.setCustomerId(reservation.getCustomerId());
-        resource.setServiceId(reservation.getServiceId());
-        resource.setCompanyId(reservation.getCompanyId());
+        resource.setServiceId(reservation.getService().getId());
+        resource.setCompanyId(reservation.getCompany().getId());
         resource.setBookingDate(reservation.getBookingDate());
         resource.setBookingTime(reservation.getBookingTime());
         resource.setBookingStatus(reservation.isBookingStatus());
         resource.setRequirements(reservation.getRequirements());
+        resource.setTotalPrice(reservation.getTotalPrice());
+
+        BookingResource.ServiceInfo serviceInfo = new BookingResource.ServiceInfo();
+        serviceInfo.setBasePrice(reservation.getServiceInfo().getBasePrice());
+        resource.setServiceInfo(serviceInfo);
+
         return resource;
     }
 }
