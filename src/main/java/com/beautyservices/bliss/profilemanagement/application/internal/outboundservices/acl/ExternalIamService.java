@@ -2,7 +2,6 @@ package com.beautyservices.bliss.profilemanagement.application.internal.outbound
 
 import com.beautyservices.bliss.iam.domain.model.aggregates.User;
 import com.beautyservices.bliss.iam.interfaces.acl.IamContextFacade;
-import com.beautyservices.bliss.profilemanagement.domain.model.valueobjects.Email;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,5 +22,10 @@ public class ExternalIamService {
         }
         return Optional.of( new User(username));
     }
+
+    public boolean existsByUsername(String username) {
+        return this.iamContextFacade.existsByUsername(username);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.beautyservices.bliss.profilemanagement.application.internal.commandservices;
 
+import com.beautyservices.bliss.profilemanagement.application.internal.outboundservices.acl.ExternalIamService;
 import com.beautyservices.bliss.profilemanagement.domain.model.aggregates.Company;
 import com.beautyservices.bliss.profilemanagement.domain.model.commands.UpdateCompanyCommand;
 import com.beautyservices.bliss.profilemanagement.domain.services.CompanyCommandService;
@@ -12,15 +13,25 @@ import java.util.Optional;
 public class CompanyCommandServiceImpl implements CompanyCommandService {
 
     private final CompanyRepository companyRepository;
+    private final ExternalIamService externalIamService;
 
-    public CompanyCommandServiceImpl(CompanyRepository companyRepository) {
+    public CompanyCommandServiceImpl(CompanyRepository companyRepository, ExternalIamService externalIamService) {
         this.companyRepository = companyRepository;
+        this.externalIamService = externalIamService;
     }
 
 
     @Override
     public Optional<Company> handle(UpdateCompanyCommand command) {
 
+        // Validate if profile already exists with the same name
+        var optionalUsername = this.externalIamService.fetchUserIdByUsername(command.email());
+
+        if (optionalUsername.isPresent()) {
+            this.companyRepository.findById(optionalUsername.get().getId()).ifPresent(student -> {
+                throw new IllegalArgumentException("Company already exists");
+            });
+        }
         var companyId = command.id();
 
         if (!this.companyRepository.existsById(companyId)) {
@@ -36,6 +47,5 @@ public class CompanyCommandServiceImpl implements CompanyCommandService {
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while updating company profile: " + e.getMessage());
         }
-
     }
 }

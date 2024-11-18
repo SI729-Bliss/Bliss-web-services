@@ -38,6 +38,10 @@ public class User extends AuditableAbstractAggregateRoot<User> {
       inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles;
 
+  public User(String username) {
+    this.roles = new HashSet<>();
+  }
+
   public User() {
     this.roles = new HashSet<>();
   }

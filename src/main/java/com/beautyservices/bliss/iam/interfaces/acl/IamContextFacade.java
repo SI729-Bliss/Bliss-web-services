@@ -7,6 +7,7 @@ import com.beautyservices.bliss.iam.domain.model.queries.GetUserByUsernameQuery;
 import com.beautyservices.bliss.iam.domain.services.UserCommandService;
 import com.beautyservices.bliss.iam.domain.services.UserQueryService;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
  * </p>
  *
  */
+@Service
 public class IamContextFacade {
 
   private final UserCommandService userCommandService;
@@ -89,5 +91,10 @@ public class IamContextFacade {
     if (result.isEmpty())
       return Strings.EMPTY;
     return result.get().getUsername();
+  }
+
+  public boolean existsByUsername(String username) {
+    var getUserByUsernameQuery = new GetUserByUsernameQuery(username);
+    return userQueryService.handle(getUserByUsernameQuery).isPresent();
   }
 }
