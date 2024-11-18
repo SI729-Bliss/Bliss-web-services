@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.PUT})
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.PUT, RequestMethod.POST})
 @RestController
 @RequestMapping(value="/api/v1/customers", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Profiles Management", description = "Profiles Management Endpoints")
