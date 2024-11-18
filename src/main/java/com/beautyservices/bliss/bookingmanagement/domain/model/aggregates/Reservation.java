@@ -9,6 +9,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import java.util.List;
 
 @Getter
@@ -34,16 +40,22 @@ public class Reservation {
     private Company company;
 
     @NotNull
-    private String bookingDate;
+    private LocalDate bookingDate;
 
     @NotNull
-    private String bookingTime;
+    private LocalTime bookingTime;
 
     @NotNull
     private boolean bookingStatus;
 
     @ElementCollection
     private List<String> requirements;
+
+    @NotNull
+    private BigDecimal totalPrice;
+
+    @Embedded
+    private ServiceInfo serviceInfo;
 
     // Constructor for CreateBookingCommand
     public Reservation(CreateBookingCommand command) {
@@ -54,6 +66,8 @@ public class Reservation {
         this.bookingTime = command.bookingTime();
         this.bookingStatus = command.bookingStatus();
         this.requirements = command.requirements();
+        this.totalPrice = command.totalPrice();
+        this.serviceInfo = new ServiceInfo(command.serviceInfo().basePrice());
     }
 
     // Default constructor
@@ -63,14 +77,23 @@ public class Reservation {
     public void update(UpdateBookingCommand command) {
         this.bookingStatus = command.bookingStatus();
         this.requirements = command.requirements();
+        this.totalPrice = command.totalPrice();
+        this.serviceInfo = new ServiceInfo(command.serviceInfo().basePrice());
     }
 
-    // New methods to get service and company IDs
-    public Long getServiceId() {
-        return service.getId();
-    }
+    @Embeddable
+    public static class ServiceInfo {
+        @NotNull
+        private BigDecimal basePrice;
 
-    public Long getCompanyId() {
-        return company.getId();
+        public ServiceInfo(BigDecimal basePrice) {
+            this.basePrice = basePrice;
+        }
+
+        public ServiceInfo() {}
+
+        public BigDecimal getBasePrice() {
+            return basePrice;
+        }
     }
 }

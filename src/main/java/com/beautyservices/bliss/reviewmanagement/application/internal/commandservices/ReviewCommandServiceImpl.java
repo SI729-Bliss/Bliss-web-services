@@ -28,8 +28,9 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         Optional<Reservation> reservationOpt = externalReservationRepository.findById(command.reservationId());
         if (reservationOpt.isPresent()) {
             Reservation reservation = reservationOpt.get();
-            ReservationInfo reservationInfo = new ReservationInfo(reservation.getServiceId(), reservation.getCompanyId());
-            Review review = new Review(reservation.getId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());            try {
+            ReservationInfo reservationInfo = new ReservationInfo(reservation.getService().getId(), reservation.getCompany().getId());
+            Review review = new Review(reservation.getId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());
+            try {
                 reviewRepository.save(review);
             } catch (Exception e) {
                 throw new IllegalArgumentException("Error while saving review: " + e.getMessage());

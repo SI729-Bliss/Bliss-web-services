@@ -5,9 +5,14 @@ import com.beautyservices.bliss.payment.interfaces.rest.resources.PaymentResourc
 
 public class PaymentResourceFromEntityAssembler {
     public static PaymentResource toResourceFromEntity(Payment payment) {
-        return new PaymentResource(payment.getId(), payment.getDate(),
-                payment.getAmount(), payment.getPaymentMethod().toString(),
-                payment.getStatus().toString(),payment.getInvoiceType().toString() ,payment.getReservationId().reservationId(),
+        return new PaymentResource(
+                payment.getId(),
+                payment.getDate(),
+                payment.getAmount(),
+                payment.getPaymentMethod().getStringName(),
+                payment.getStatus().getStringName(),
+                payment.getInvoiceType().getStringName(),
+                payment.getReservationId().reservationId(),
                 payment.getCustomerId().customerId());
     }
 }
