@@ -23,30 +23,7 @@ public class BlissApplication {
 		SpringApplication.run(BlissApplication.class, args);
 	}
 
-	@Configuration
-	public static class WebConfig implements WebMvcConfigurer {
 
-		@Override
-		public void addCorsMappings(CorsRegistry registry) {
-			registry.addMapping("/**") // Permite todas las rutas
-					.allowedOrigins("*") // Permite el origen de tu frontend
-					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
-					.allowedHeaders("*") // Permite todos los encabezados
-					.allowCredentials(true); // Permite el uso de credenciales, si es necesario
-		}
-	}
-	@Bean
-	public CorsFilter corsFilter() {
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		final CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		// Don't do this in production, use a proper list  of allowed origins
-		config.setAllowedOrigins(Collections.singletonList("*"));
-		config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
-		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
-		source.registerCorsConfiguration("/**", config);
-		return new CorsFilter(source);
-	}
 
 
 }
