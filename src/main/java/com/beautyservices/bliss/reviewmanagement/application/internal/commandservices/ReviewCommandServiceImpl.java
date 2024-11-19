@@ -29,7 +29,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         if (reservationOpt.isPresent()) {
             Reservation reservation = reservationOpt.get();
             ReservationInfo reservationInfo = new ReservationInfo(reservation.getService().getId(), reservation.getCompany().getId());
-            Review review = new Review(reservation.getId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());
+            Review review = new Review(reservation.getId(), command.userId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());
             try {
                 reviewRepository.save(review);
             } catch (Exception e) {
