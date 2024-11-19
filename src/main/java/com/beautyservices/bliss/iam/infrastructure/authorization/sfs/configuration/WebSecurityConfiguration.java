@@ -67,22 +67,17 @@ public class WebSecurityConfiguration {
    * @param http The http security
    * @return The security filter chain
    */
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.cors(corsConfigurer -> corsConfigurer.configurationSource( request -> {
+    http.cors(corsConfigurer -> corsConfigurer.configurationSource(request -> {
       var cors = new CorsConfiguration();
       cors.setAllowedOrigins(List.of("*"));
       cors.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
       cors.setAllowedHeaders(List.of("*"));
       return cors;
-    } ));
-    http
-            .authorizeRequests(authorizeRequests ->
-                    authorizeRequests.anyRequest().permitAll()
-            )
-            .csrf(AbstractHttpConfigurer::disable);
-    return http.build();
-   /*http.csrf(csrfConfigurer -> csrfConfigurer.disable())
+    }));
+    http.csrf(csrfConfigurer -> csrfConfigurer.disable())
             .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandler))
             .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(
@@ -94,7 +89,7 @@ public class WebSecurityConfiguration {
                             .authenticated());
     http.authenticationProvider(authenticationProvider());
     http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
-    return http.build();*/
+    return http.build();
   }
 
   /**
