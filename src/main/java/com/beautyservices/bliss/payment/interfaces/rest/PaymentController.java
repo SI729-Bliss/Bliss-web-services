@@ -193,7 +193,7 @@ public class PaymentController {
                 )
         }
     )
-    @GetMapping("/{reservationId}")
+    @GetMapping("/findByReservationId")
     public ResponseEntity<PaymentResource> getPaymentByReservationId(@RequestParam(name = "reservationId") Long reservationId) {
         if(reservationId == null) return ResponseEntity.badRequest().build();
         ReservationId id = new ReservationId(reservationId);
