@@ -29,10 +29,7 @@ public class BlissApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("*") // O especifica el dominio de tu cliente
-						.allowedMethods("GET", "POST", "PUT", "DELETE")
-						.allowedHeaders("Content-Type", "Authorization")
-						.allowCredentials(true); // Incluye 'Authorization' para JWT
+						.allowedOrigins("*");
 			}
 		};
 	}
