@@ -34,7 +34,7 @@ public class BlissApplication {
 							.allowedOrigins("*")
 							.allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
 							.allowedHeaders("*")
-							.allowCredentials(false);
+							.allowCredentials(true);
 				}
 			};
 		}
