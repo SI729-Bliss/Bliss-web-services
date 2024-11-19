@@ -5,8 +5,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @EnableJpaAuditing
 @SpringBootApplication
@@ -17,7 +24,7 @@ public class BlissApplication {
 	}
 
 	@Configuration
-	public static class CorsConfig implements WebMvcConfigurer {
+	public static class MyConfiguration {
 		@Bean
 		public WebMvcConfigurer corsConfigurer() {
 			return new WebMvcConfigurer() {
@@ -25,11 +32,14 @@ public class BlissApplication {
 				public void addCorsMappings(CorsRegistry registry) {
 					registry.addMapping("/**")
 							.allowedOrigins("*")
-							.allowedHeaders("*");
+							.allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
+							.allowedHeaders("*")
+							.allowCredentials(false);
 				}
 			};
 		}
 	}
 
-	
+
 }
+
