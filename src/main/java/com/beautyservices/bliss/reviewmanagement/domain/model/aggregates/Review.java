@@ -28,6 +28,9 @@ public class Review extends AuditableAbstractAggregateRoot<Review> {
     @JoinColumn(name = "reservation_id", insertable = false, updatable = false)
     private Reservation reservation;
 
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
     private int punctuation;
     private String comment;
 
@@ -41,9 +44,10 @@ public class Review extends AuditableAbstractAggregateRoot<Review> {
 
     public Review() {}
 
-    public Review(Long reservationId, int punctuation, String comment, ReservationInfo reservationInfo, List<String> imageUrls) {
+    public Review(Long reservationId, Long userId, int punctuation, String comment, ReservationInfo reservationInfo, List<String> imageUrls) {
         this.reservationId = reservationId;
         this.punctuation = punctuation;
+        this.userId = userId;
         this.comment = comment;
         this.reservationInfo = reservationInfo;
         this.imageUrls = imageUrls;

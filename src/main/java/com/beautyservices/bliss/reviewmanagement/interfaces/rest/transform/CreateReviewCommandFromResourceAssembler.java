@@ -10,9 +10,10 @@ public class CreateReviewCommandFromResourceAssembler {
     public CreateReviewCommand toCommand(CreateReviewResource resource) {
         return new CreateReviewCommand(
                 resource.reservationId(),
+                resource.userId(),
                 resource.punctuation(),
                 resource.comment(),
-                resource.imageUrls() // Include the imageUrls field
+                resource.imageUrls()
         );
     }
 }
