@@ -9,9 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -44,7 +41,7 @@ public class Reservation {
     private LocalDate bookingDate;
 
     @NotNull
-    private String bookingTime;
+    private LocalTime bookingTime;
 
     @NotNull
     private boolean bookingStatus;

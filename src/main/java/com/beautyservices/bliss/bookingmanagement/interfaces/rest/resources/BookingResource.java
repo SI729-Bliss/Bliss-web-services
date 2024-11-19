@@ -9,7 +9,7 @@ public record BookingResource(Long id,
                               Long serviceId,
                               Long companyId,
                               LocalDate bookingDate,
-                              String bookingTime,
+                              LocalTime bookingTime,
                               boolean bookingStatus,
                               List<String> requirements,
                               float totalAmount) {
