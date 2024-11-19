@@ -37,10 +37,11 @@ public class ReviewFacade {
         Optional<Reservation> reservationOpt = externalReservationRepository.findById(command.reservationId());
         if (reservationOpt.isPresent()) {
             Reservation reservation = reservationOpt.get();
-            ReservationInfo reservationInfo = new ReservationInfo(reservation.getServiceId(), reservation.getCompanyId());
-            Review review = new Review(reservation.getId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());            Review savedReview = reviewCommandService.createReview(command).orElse(null);
+            ReservationInfo reservationInfo = new ReservationInfo(reservation.getService().getId(), reservation.getCompany().getId());
+            Review review = new Review(reservation.getId(), command.userId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());
+            Review savedReview = reviewCommandService.createReview(command).orElse(null);
             if (savedReview != null) {
-                companyRatingService.updateCompanyRating(reservation.getCompanyId(), command.punctuation());
+                companyRatingService.updateCompanyRating(reservation.getCompany().getId(), command.punctuation());
                 return Optional.of(savedReview);
             }
         }
@@ -66,7 +67,6 @@ public class ReviewFacade {
     public List<Review> getReviewsByUserId(Long userId) {
         return reviewRepository.findByReservationId(userId);
     }
-
 
     public List<Review> getReviewsByReservationId(Long reservationId) {
         return reviewRepository.findByReservationId(reservationId);

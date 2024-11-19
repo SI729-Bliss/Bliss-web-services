@@ -9,11 +9,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@Table(name="reservations")
 public class Reservation {
 
     @Id
@@ -34,10 +38,10 @@ public class Reservation {
     private Company company;
 
     @NotNull
-    private String bookingDate;
+    private LocalDate bookingDate;
 
     @NotNull
-    private String bookingTime;
+    private LocalTime bookingTime;
 
     @NotNull
     private boolean bookingStatus;
@@ -45,15 +49,20 @@ public class Reservation {
     @ElementCollection
     private List<String> requirements;
 
+    @NotNull
+    private float totalAmount;
+
+
     // Constructor for CreateBookingCommand
     public Reservation(CreateBookingCommand command) {
         this.customerId = command.customerId();
         this.service = new Service(command.serviceId());
         this.company = new Company(command.companyId());
-        this.bookingDate = command.bookingDate();
+        this.bookingDate = command.bookingDate( );
         this.bookingTime = command.bookingTime();
         this.bookingStatus = command.bookingStatus();
         this.requirements = command.requirements();
+        this.totalAmount = command.totalAmount();
     }
 
     // Default constructor
@@ -63,6 +72,7 @@ public class Reservation {
     public void update(UpdateBookingCommand command) {
         this.bookingStatus = command.bookingStatus();
         this.requirements = command.requirements();
+        this.totalAmount = command.totalAmount();
     }
 
     // New methods to get service and company IDs
@@ -73,4 +83,7 @@ public class Reservation {
     public Long getCompanyId() {
         return company.getId();
     }
+
+
+
 }

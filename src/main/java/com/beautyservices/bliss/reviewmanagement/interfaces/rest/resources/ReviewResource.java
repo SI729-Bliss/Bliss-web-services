@@ -9,6 +9,7 @@ import java.util.List;
 public record ReviewResource(
         @Schema(description = "ID of the review", example = "1") Long id,
         @Schema(description = "ID of the reservation", example = "1") Long reservationId,
+        @Schema(description = "ID of the user", example = "1") Long userId,
         @Schema(description = "Punctuation of the review", example = "5") int punctuation,
         @Schema(description = "Comment of the review", example = "Great service!") String comment,
         @Schema(description = "Information about the reservation") ReservationInfo reservationInfo,

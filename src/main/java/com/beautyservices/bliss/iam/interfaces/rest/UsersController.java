@@ -23,7 +23,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Users", description = "User Management Endpoints")
+@Tag(name = "IAM", description = "User Management Endpoints")
 public class UsersController {
 
   private final UserQueryService userQueryService;

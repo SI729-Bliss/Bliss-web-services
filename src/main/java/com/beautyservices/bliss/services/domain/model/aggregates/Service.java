@@ -8,7 +8,6 @@ import lombok.Getter;
 import com.beautyservices.bliss.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import com.beautyservices.bliss.services.domain.model.commands.CreateServiceCommand;
 import com.beautyservices.bliss.services.domain.model.valueobjects.BeautySalonId;
-import com.beautyservices.bliss.services.domain.model.valueobjects.CategoryId;
 
 @Entity
 @Table(name = "services")
@@ -20,11 +19,11 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "categoryId", column = @Column(name = "category_id")),
-    })
-    private CategoryId categoryId;
+    @Getter
+    @NotNull
+    @NotBlank
+    @Column(name = "category",length = 50, nullable = false)
+    private String category;
 
     @Getter
     @NotNull
@@ -50,9 +49,9 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
     private BeautySalonId salonId;
 
     //***************************
-    public Service(String name, Long categoryId, String imageUrl, String description, int basePrice, Long salonId) {
+    public Service(String name, String category, String imageUrl, String description, int basePrice, Long salonId) {
         this.name = name;
-        this.categoryId = new CategoryId(categoryId);
+        this.category = category;
         this.imageUrl = imageUrl;
         this.description = description;
         this.basePrice = basePrice;
@@ -61,16 +60,12 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
 
     public Service() {}
 
-    public Service(CategoryId categoryId, BeautySalonId beautySalonId) {
+    public Service(BeautySalonId beautySalonId) {
         this();
-        this.categoryId = categoryId;
         this.salonId = beautySalonId;
     }
     public Service(Long id) {
         this.id = id;
-    }
-    public Long getCategoryId(){
-        return categoryId.categoryId();
     }
 
     public Long getSalonId(){
@@ -82,7 +77,7 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
     // Command
     public Service(CreateServiceCommand command){
         this.name = command.name();
-        this.categoryId = new CategoryId(command.categoryId());
+        this.category = command.category();
         this.imageUrl = command.imageUrl();
         this.description = command.description();
         this.basePrice = command.basePrice();
@@ -90,8 +85,9 @@ public class Service extends AuditableAbstractAggregateRoot<Service> {
     }
 
     // Update
-    public Service updateServiceInformation(String name, String imageUrl, String description, int basePrice){
+    public Service updateServiceInformation(String name, String category,String imageUrl, String description, int basePrice){
         this.name = name;
+        this.category = category;
         this.imageUrl = imageUrl;
         this.description = description;
         this.basePrice = basePrice;

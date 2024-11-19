@@ -14,6 +14,7 @@ public class ReviewResourceFromEntityAssembler {
         return new ReviewResource(
                 review.getId(),
                 review.getReservationId(),
+                review.getUserId(),
                 review.getPunctuation(),
                 review.getComment(),
                 review.getReservationInfo(),

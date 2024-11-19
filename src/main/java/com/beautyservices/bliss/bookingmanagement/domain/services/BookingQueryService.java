@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookingQueryService {
-    Optional<Reservation> handle(GetBookingByIdQuery query);
-    List<Reservation> handle(GetBookingsByCustomerIdQuery query);
-    List<Reservation> handle(GetBookingsByServiceIdQuery query);
-    List<Reservation> handle(GetAllBookingsQuery query);
-    List<Reservation> handle(GetBookingsByCompanyIdQuery query);
+    Optional<Reservation> handle(GetReservationByIdQuery query);
+    List<Reservation> handle(GetReservationsByCustomerIdQuery query);
+    List<Reservation> handle(GetReservationsByServiceIdQuery query);
+    List<Reservation> handle(GetAllReservationsQuery query);
+    List<Reservation> handle(GetReservationsByCompanyIdQuery query);
 }
