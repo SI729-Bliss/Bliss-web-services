@@ -23,7 +23,18 @@ public class BlissApplication {
 		SpringApplication.run(BlissApplication.class, args);
 	}
 
-
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**")
+						.allowedOrigins("*") // O especifica el dominio de tu cliente
+						.allowedMethods("GET", "POST", "PUT", "DELETE")
+						.allowedHeaders("Content-Type", "Authorization"); // Incluye 'Authorization' para JWT
+			}
+		};
+	}
 
 
 }
