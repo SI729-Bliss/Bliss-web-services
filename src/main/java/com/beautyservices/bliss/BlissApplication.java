@@ -17,19 +17,19 @@ public class BlissApplication {
 	}
 
 	@Configuration
-	public static class CorsConfig implements WebMvcConfigurer {
-		@Bean
-		public WebMvcConfigurer corsConfigurer() {
-			return new WebMvcConfigurer() {
-				@Override
-				public void addCorsMappings(CorsRegistry registry) {
-					registry.addMapping("/**")
-							.allowedOrigins("*")
-							.allowedHeaders("*");
-				}
-			};
+	public static class WebConfig implements WebMvcConfigurer {
+
+		@Override
+		public void addCorsMappings(CorsRegistry registry) {
+			registry.addMapping("/**") // Permite todas las rutas
+					.allowedOrigins("http://localhost:4200") // Permite el origen de tu frontend
+					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
+					.allowedHeaders("*") // Permite todos los encabezados
+					.allowCredentials(true); // Permite el uso de credenciales, si es necesario
 		}
 	}
 
-	
+
+
 }
+
