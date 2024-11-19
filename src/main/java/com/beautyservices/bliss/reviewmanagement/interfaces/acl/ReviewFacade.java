@@ -5,10 +5,14 @@ import com.beautyservices.bliss.reviewmanagement.domain.model.aggregates.Review;
 import com.beautyservices.bliss.reviewmanagement.domain.model.commands.CreateReviewCommand;
 import com.beautyservices.bliss.reviewmanagement.domain.model.commands.UpdateReviewCommand;
 import com.beautyservices.bliss.reviewmanagement.domain.model.commands.DeleteReviewCommand;
+import com.beautyservices.bliss.reviewmanagement.domain.model.queries.GetReviewByIdQuery;
+import com.beautyservices.bliss.reviewmanagement.domain.model.queries.GetReviewsByCompanyIdQuery;
+import com.beautyservices.bliss.reviewmanagement.domain.model.queries.GetReviewsByReservationIdQuery;
+import com.beautyservices.bliss.reviewmanagement.domain.model.queries.GetReviewsByUserIdQuery;
 import com.beautyservices.bliss.reviewmanagement.domain.model.valueobjects.ReservationInfo;
 import com.beautyservices.bliss.reviewmanagement.domain.services.ReviewCommandService;
+import com.beautyservices.bliss.reviewmanagement.domain.services.ReviewQueryService;
 import com.beautyservices.bliss.reviewmanagement.infrastructure.persistence.jpa.repositories.ExternalReservationRepository;
-import com.beautyservices.bliss.reviewmanagement.infrastructure.persistence.jpa.repositories.ReviewRepository;
 import com.beautyservices.bliss.bookingmanagement.domain.model.aggregates.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,17 +24,17 @@ import java.util.Optional;
 public class ReviewFacade {
 
     private final ReviewCommandService reviewCommandService;
+    private final ReviewQueryService reviewQueryService;
     private final CompanyRatingService companyRatingService;
     private final ExternalReservationRepository externalReservationRepository;
-    private final ReviewRepository reviewRepository;
 
     @Autowired
-    public ReviewFacade(ReviewCommandService reviewCommandService, CompanyRatingService companyRatingService,
-                        ExternalReservationRepository externalReservationRepository, ReviewRepository reviewRepository) {
+    public ReviewFacade(ReviewCommandService reviewCommandService, ReviewQueryService reviewQueryService,
+                        CompanyRatingService companyRatingService, ExternalReservationRepository externalReservationRepository) {
         this.reviewCommandService = reviewCommandService;
+        this.reviewQueryService = reviewQueryService;
         this.companyRatingService = companyRatingService;
         this.externalReservationRepository = externalReservationRepository;
-        this.reviewRepository = reviewRepository;
     }
 
     public Optional<Review> createReview(CreateReviewCommand command) {
@@ -38,7 +42,6 @@ public class ReviewFacade {
         if (reservationOpt.isPresent()) {
             Reservation reservation = reservationOpt.get();
             ReservationInfo reservationInfo = new ReservationInfo(reservation.getService().getId(), reservation.getCompany().getId());
-            Review review = new Review(reservation.getId(), command.userId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());
             Review savedReview = reviewCommandService.createReview(command).orElse(null);
             if (savedReview != null) {
                 companyRatingService.updateCompanyRating(reservation.getCompany().getId(), command.punctuation());
@@ -57,18 +60,18 @@ public class ReviewFacade {
     }
 
     public Optional<Review> getReviewById(Long id) {
-        return reviewRepository.findById(id);
+        return reviewQueryService.handle(new GetReviewByIdQuery(id));
     }
 
     public List<Review> getReviewsByCompanyId(Long companyId) {
-        return reviewRepository.findByReservationInfoCompanyId(companyId);
+        return reviewQueryService.handle(new GetReviewsByCompanyIdQuery(companyId));
     }
 
     public List<Review> getReviewsByUserId(Long userId) {
-        return reviewRepository.findByReservationId(userId);
+        return reviewQueryService.handle(new GetReviewsByUserIdQuery(userId));
     }
 
     public List<Review> getReviewsByReservationId(Long reservationId) {
-        return reviewRepository.findByReservationId(reservationId);
+        return reviewQueryService.handle(new GetReviewsByReservationIdQuery(reservationId));
     }
 }
