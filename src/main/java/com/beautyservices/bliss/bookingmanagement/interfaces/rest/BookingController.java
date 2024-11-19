@@ -81,6 +81,19 @@ public class BookingController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(resources);
     }
+    @Operation(summary = "Get booking by id", description = "Returns  booking for id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Booking found"),
+            @ApiResponse(responseCode = "404", description = "Booking not found")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<BookingResource> getBookingById(
+            @Parameter(description = "ID of the booking to be retrieved") @PathVariable Long id) {
+        var booking = bookingQueryService.handle(new GetReservationByIdQuery(id));
+        return booking.map((BookingResourceFromEntityAssembler::toResourceFromEntity))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @Operation(summary = "Get all bookings", description = "Returns all bookings")
     @ApiResponses(value = {
@@ -132,5 +145,6 @@ public class BookingController {
         bookingCommandService.handle(new DeleteBookingCommand(id));
         return ResponseEntity.noContent().build();
     }
+
 }
 
