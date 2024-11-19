@@ -13,33 +13,37 @@ import java.util.Optional;
 @Service
 public class BookingQueryServiceImpl implements BookingQueryService {
 
-    @Autowired
-    private BookingRepository reservationRepository;
 
-    @Override
-    public Optional<Reservation> handle(GetBookingByIdQuery query) {
-        return reservationRepository.findById(query.bookingId());
+    private final BookingRepository reservationRepository;
+
+    public BookingQueryServiceImpl(BookingRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
     }
 
     @Override
-    public List<Reservation> handle(GetBookingsByCustomerIdQuery query) {
-        return reservationRepository.findByCustomerId(query.customerId());
+    public Optional<Reservation> handle(GetReservationByIdQuery query) {
+        return this.reservationRepository.findById(query.bookingId());
     }
 
     @Override
-    public List<Reservation> handle(GetBookingsByServiceIdQuery query) {
-        return reservationRepository.findByService_Id(query.serviceId());
+    public List<Reservation> handle(GetReservationsByCustomerIdQuery query) {
+        return this.reservationRepository.findByCustomerId(query.customerId());
+    }
+
+    @Override
+    public List<Reservation> handle(GetReservationsByServiceIdQuery query) {
+        return this.reservationRepository.findByService_Id(query.serviceId());
     }
 
 
 
     @Override
-    public List<Reservation> handle(GetAllBookingsQuery query) {
+    public List<Reservation> handle(GetAllReservationsQuery query) {
         return reservationRepository.findAll();
     }
 
     @Override
-    public List<Reservation> handle(GetBookingsByCompanyIdQuery query) {
+    public List<Reservation> handle(GetReservationsByCompanyIdQuery query) {
         return reservationRepository.findByCompany_Id(query.companyId());
     }
 }

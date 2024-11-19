@@ -6,17 +6,7 @@ import java.math.BigDecimal;
 
 
 public class CreateBookingCommandFromResourceAssembler {
-    public static CreateBookingCommand toCommand(CreateBookingResource resource) {
-        return new CreateBookingCommand(
-                resource.getCustomerId(),
-                resource.getServiceId(),
-                resource.getCompanyId(),
-                resource.getBookingDate(),
-                resource.getBookingTime(),
-                resource.isBookingStatus(),
-                resource.getRequirements(),
-                resource.getTotalPrice(),
-                new CreateBookingCommand.ServiceInfo(resource.getServiceInfo().getBasePrice())
-        );
+    public static CreateBookingCommand toCommandFromResource(CreateBookingResource resource) {
+        return new CreateBookingCommand(resource.customerId(), resource.serviceId(), resource.companyId(), resource.bookingDate(), resource.bookingTime(), resource.bookingStatus(), resource.requirements(), resource.totalAmount());
     }
 }

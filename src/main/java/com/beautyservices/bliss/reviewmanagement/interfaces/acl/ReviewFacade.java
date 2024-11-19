@@ -38,7 +38,7 @@ public class ReviewFacade {
         if (reservationOpt.isPresent()) {
             Reservation reservation = reservationOpt.get();
             ReservationInfo reservationInfo = new ReservationInfo(reservation.getService().getId(), reservation.getCompany().getId());
-            Review review = new Review(reservation.getId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());
+            Review review = new Review(reservation.getId(), command.userId(), command.punctuation(), command.comment(), reservationInfo, command.imageUrls());
             Review savedReview = reviewCommandService.createReview(command).orElse(null);
             if (savedReview != null) {
                 companyRatingService.updateCompanyRating(reservation.getCompany().getId(), command.punctuation());

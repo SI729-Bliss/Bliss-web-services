@@ -6,7 +6,6 @@ import com.beautyservices.bliss.bookingmanagement.domain.model.commands.UpdateBo
 import com.beautyservices.bliss.bookingmanagement.domain.model.commands.DeleteBookingCommand;
 import com.beautyservices.bliss.bookingmanagement.domain.services.BookingCommandService;
 import com.beautyservices.bliss.bookingmanagement.infrastructure.persistence.jpa.repositories.BookingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,35 +13,39 @@ import java.util.Optional;
 @Service
 public class BookingCommandServiceImpl implements BookingCommandService {
 
-    @Autowired
-    private BookingRepository reservationRepository;
+
+    private final BookingRepository reservationRepository;
+
+    public BookingCommandServiceImpl(BookingRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
+
 
     @Override
-    public Optional<Reservation> handle(CreateBookingCommand command) {
+    public Long handle(CreateBookingCommand command) {
         Reservation reservation = new Reservation(command);
-        try {
-            reservationRepository.save(reservation);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Error while saving reservation: " + e.getMessage());
+        try{
+            this.reservationRepository.save(reservation);
+        }catch(Exception e){
+            throw new IllegalArgumentException("Error while saving payment: " + e.getMessage());
         }
-        return Optional.of(reservation);
+        return reservation.getId() ;
     }
 
     @Override
     public Optional<Reservation> handle(UpdateBookingCommand command) {
-        Optional<Reservation> reservationOptional = reservationRepository.findById(command.id());
-        if (reservationOptional.isPresent()) {
-            Reservation reservation = reservationOptional.get();
-            reservation.update(command);
-            try {
-                reservationRepository.save(reservation);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Error while updating reservation: " + e.getMessage());
-            }
-            return Optional.of(reservation);
+        var reservationId = command.id();
+        var reservationToUpdate = this.reservationRepository.findById(reservationId).orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+        reservationToUpdate.update(command);
+
+        try {
+            var updatedReservation = this.reservationRepository.save(reservationToUpdate);
+            return Optional.of(updatedReservation);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating reservation: " + e.getMessage());
         }
-        return Optional.empty();
     }
+
 
     @Override
     public void handle(DeleteBookingCommand command) {

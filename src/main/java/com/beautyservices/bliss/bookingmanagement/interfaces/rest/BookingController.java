@@ -1,14 +1,16 @@
 package com.beautyservices.bliss.bookingmanagement.interfaces.rest;
 
+import com.beautyservices.bliss.bookingmanagement.domain.model.commands.CreateBookingCommand;
 import com.beautyservices.bliss.bookingmanagement.domain.model.commands.DeleteBookingCommand;
 import com.beautyservices.bliss.bookingmanagement.domain.model.queries.*;
 import com.beautyservices.bliss.bookingmanagement.domain.services.BookingCommandService;
 import com.beautyservices.bliss.bookingmanagement.domain.services.BookingQueryService;
 import com.beautyservices.bliss.bookingmanagement.interfaces.rest.resources.BookingResource;
 import com.beautyservices.bliss.bookingmanagement.interfaces.rest.resources.CreateBookingResource;
-import com.beautyservices.bliss.bookingmanagement.interfaces.rest.transform.BookingResourceAssembler;
+import com.beautyservices.bliss.bookingmanagement.interfaces.rest.transform.BookingResourceFromEntityAssembler;
 import com.beautyservices.bliss.bookingmanagement.interfaces.rest.transform.CreateBookingCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*", methods = { RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE })
 @RestController
 @RequestMapping(value = "/api/v1/bookings", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Booking", description = "Booking API")
@@ -42,9 +45,9 @@ public class BookingController {
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<List<BookingResource>> getBookingsByCustomerId(
             @Parameter(description = "ID of the customer whose bookings are to be retrieved") @PathVariable Long customerId) {
-        List<BookingResource> resources = bookingQueryService.handle(new GetBookingsByCustomerIdQuery(customerId))
+        List<BookingResource> resources = bookingQueryService.handle(new GetReservationsByCustomerIdQuery(customerId))
                 .stream()
-                .map(BookingResourceAssembler::toResource)
+                .map(BookingResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(resources);
     }
@@ -57,9 +60,9 @@ public class BookingController {
     @GetMapping("/service/{serviceId}")
     public ResponseEntity<List<BookingResource>> getBookingsByServiceId(
             @Parameter(description = "ID of the service whose bookings are to be retrieved") @PathVariable Long serviceId) {
-        List<BookingResource> resources = bookingQueryService.handle(new GetBookingsByServiceIdQuery(serviceId))
+        List<BookingResource> resources = bookingQueryService.handle(new GetReservationsByServiceIdQuery(serviceId))
                 .stream()
-                .map(BookingResourceAssembler::toResource)
+                .map(BookingResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(resources);
     }
@@ -72,11 +75,24 @@ public class BookingController {
     @GetMapping("/company/{companyId}")
     public ResponseEntity<List<BookingResource>> getBookingsByCompanyId(
             @Parameter(description = "ID of the company whose bookings are to be retrieved") @PathVariable Long companyId) {
-        List<BookingResource> resources = bookingQueryService.handle(new GetBookingsByCompanyIdQuery(companyId))
+        List<BookingResource> resources = bookingQueryService.handle(new GetReservationsByCompanyIdQuery(companyId))
                 .stream()
-                .map(BookingResourceAssembler::toResource)
+                .map(BookingResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(resources);
+    }
+    @Operation(summary = "Get booking by id", description = "Returns  booking for id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Booking found"),
+            @ApiResponse(responseCode = "404", description = "Booking not found")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<BookingResource> getBookingById(
+            @Parameter(description = "ID of the booking to be retrieved") @PathVariable Long id) {
+        var booking = bookingQueryService.handle(new GetReservationByIdQuery(id));
+        return booking.map((BookingResourceFromEntityAssembler::toResourceFromEntity))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Get all bookings", description = "Returns all bookings")
@@ -86,9 +102,9 @@ public class BookingController {
     })
     @GetMapping
     public ResponseEntity<List<BookingResource>> getAllBookings() {
-        List<BookingResource> resources = bookingQueryService.handle(new GetAllBookingsQuery())
+        List<BookingResource> resources = bookingQueryService.handle(new GetAllReservationsQuery())
                 .stream()
-                .map(BookingResourceAssembler::toResource)
+                .map(BookingResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(resources);
     }
@@ -99,13 +115,24 @@ public class BookingController {
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     @PostMapping
-    public ResponseEntity<BookingResource> createBooking(
-            @Parameter(description = "Booking details") @RequestBody CreateBookingResource resource) {
-        var command = CreateBookingCommandFromResourceAssembler.toCommand(resource);
-        var reservation = bookingCommandService.handle(command);
-        return reservation.map(r -> ResponseEntity.ok(BookingResourceAssembler.toResource(r)))
-                .orElse(ResponseEntity.badRequest().build());
+    public ResponseEntity<BookingResource> createBooking (@RequestBody CreateBookingResource resource) {
+        var createBookingCommand = CreateBookingCommandFromResourceAssembler
+                .toCommandFromResource(resource);
+
+        var bookingId = this.bookingCommandService.handle(createBookingCommand);
+
+        if (bookingId.equals(0L)) {
+            return ResponseEntity.badRequest().build();
+        }
+        var getReservationByIdQuery = new GetReservationByIdQuery(bookingId);
+        var optionalReservation = this.bookingQueryService.handle(getReservationByIdQuery);
+
+        var bookingResource = BookingResourceFromEntityAssembler.toResourceFromEntity(optionalReservation.get());
+        return   new ResponseEntity<>(bookingResource, HttpStatus.CREATED);
     }
+
+
+
 
     @Operation(summary = "Delete a booking by ID", description = "Deletes a booking by its ID")
     @ApiResponses(value = {
@@ -118,5 +145,6 @@ public class BookingController {
         bookingCommandService.handle(new DeleteBookingCommand(id));
         return ResponseEntity.noContent().build();
     }
+
 }
 
