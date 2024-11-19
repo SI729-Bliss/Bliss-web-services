@@ -5,6 +5,6 @@ import com.beautyservices.bliss.services.interfaces.rest.resources.ServiceResour
 
 public class UpdateServiceCommandFromResourceAssembler {
     public static UpdateServiceCommand toCommandFromResource(Long serviceId, ServiceResource resource) {
-        return new UpdateServiceCommand(serviceId, resource.name(), resource.imageUrl(), resource.description(), resource.basePrice());
+        return new UpdateServiceCommand(serviceId, resource.name(), resource.category(),resource.imageUrl(), resource.description(), resource.basePrice(), resource.salonId());
     }
 }

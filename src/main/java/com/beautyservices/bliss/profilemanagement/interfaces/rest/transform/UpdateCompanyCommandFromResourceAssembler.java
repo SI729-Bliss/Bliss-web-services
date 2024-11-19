@@ -5,6 +5,6 @@ import com.beautyservices.bliss.profilemanagement.interfaces.rest.resources.Comp
 
 public class UpdateCompanyCommandFromResourceAssembler {
     public static UpdateCompanyCommand toCommandFromResource(Long id, CompanyResource resource) {
-        return new UpdateCompanyCommand(id, resource.name(), resource.email(), resource.phoneNumber(), resource.address());
+        return new UpdateCompanyCommand(id, resource.name(), resource.email(), resource.phoneNumber(), resource.address(), resource.rating());
     }
 }

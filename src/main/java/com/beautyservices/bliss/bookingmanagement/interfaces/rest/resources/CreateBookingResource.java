@@ -3,18 +3,18 @@ package com.beautyservices.bliss.bookingmanagement.interfaces.rest.resources;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class CreateBookingResource {
-    private Long customerId;
-    private Long serviceId;
-    private String date;
-    private String time;
-    private String status;
-    private String fullName;
-    private String email;
-    private String service;
-    private String availability;
-    private String message;
-    private String requirements;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
+public record CreateBookingResource(Long customerId,
+                                    Long serviceId,
+                                    Long companyId,
+                                    LocalDate bookingDate,
+                                    LocalTime bookingTime,
+                                    boolean bookingStatus,
+                                    List<String> requirements,
+                                    float totalAmount) {
+
 }

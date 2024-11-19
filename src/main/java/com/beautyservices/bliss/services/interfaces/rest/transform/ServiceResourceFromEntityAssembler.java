@@ -5,7 +5,6 @@ import com.beautyservices.bliss.services.interfaces.rest.resources.ServiceResour
 
 public class ServiceResourceFromEntityAssembler {
     public static ServiceResource toResourceFromEntity(Service entity) {
-        return new ServiceResource(entity.getId(), entity.getName(), entity.getCategoryId(), entity.getImageUrl(), entity.getDescription(), entity.getBasePrice(), entity.getSalonId());
+        return new ServiceResource(entity.getId(), entity.getName(), entity.getCategory(), entity.getImageUrl(), entity.getDescription(), entity.getBasePrice(), entity.getSalonId());
     }
-    //ServiceResource(Long id, String name, int categoryId, String imageUrl, String description, int basePrice, int beautySalonId)
 }

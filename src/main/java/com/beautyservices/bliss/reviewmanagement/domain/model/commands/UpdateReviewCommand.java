@@ -1,7 +1,5 @@
-// src/main/java/com/beautyservices/bliss/reviewmanagement/domain/model/commands/UpdateReviewCommand.java
 package com.beautyservices.bliss.reviewmanagement.domain.model.commands;
 
-import com.beautyservices.bliss.reviewmanagement.domain.model.valueobjects.Punctuation;
+import java.util.List;
 
-public record UpdateReviewCommand(Long id, Punctuation punctuation, String comment, String images) {
-}
+public record UpdateReviewCommand(Long id, int punctuation, String comment, List<String> imageUrls) {}

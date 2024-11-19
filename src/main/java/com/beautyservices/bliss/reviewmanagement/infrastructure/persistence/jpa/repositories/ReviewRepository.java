@@ -2,11 +2,12 @@ package com.beautyservices.bliss.reviewmanagement.infrastructure.persistence.jpa
 
 import com.beautyservices.bliss.reviewmanagement.domain.model.aggregates.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Optional;
+import java.util.List;
 
-@Repository
+@Schema(description = "Repository for managing review entities")
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    Optional<Review> findByReservationId(Long reservationId);
+    List<Review> findByReservationId(Long reservationId);
+    List<Review> findByReservationInfoCompanyId(Long companyId);
 }

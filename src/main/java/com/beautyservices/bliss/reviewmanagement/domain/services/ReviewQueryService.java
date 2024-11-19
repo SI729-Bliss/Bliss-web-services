@@ -1,11 +1,15 @@
-// src/main/java/com/beautyservices/bliss/reviewmanagement/domain/services/ReviewQueryService.java
 package com.beautyservices.bliss.reviewmanagement.domain.services;
 
 import com.beautyservices.bliss.reviewmanagement.domain.model.aggregates.Review;
-import com.beautyservices.bliss.reviewmanagement.domain.model.queries.GetReviewByReservationIdQuery;
+import com.beautyservices.bliss.reviewmanagement.domain.model.queries.GetReviewsByReservationIdQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ReviewQueryService {
-    Optional<Review> handle(GetReviewByReservationIdQuery query);
+    List<Review> getReviewsByCompanyId(Long companyId);
+    List<Review> getReviewsByUserId(Long userId);
+    Optional<Review> getReviewById(Long id);
+    List<Review> getReviewsByReservationId(GetReviewsByReservationIdQuery query);
+
 }

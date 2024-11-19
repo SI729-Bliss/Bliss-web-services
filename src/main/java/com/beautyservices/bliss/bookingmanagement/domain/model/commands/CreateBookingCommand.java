@@ -1,4 +1,16 @@
 package com.beautyservices.bliss.bookingmanagement.domain.model.commands;
 
-public record CreateBookingCommand(Long customerId, Long serviceId, String date, String time, String status, String fullName, String email, String service, String availability, String message, String requirements) {
+import java.time.LocalTime;
+import java.util.List;
+
+import java.time.LocalDate;
+
+public record CreateBookingCommand(Long customerId,
+                                   Long serviceId,
+                                   Long companyId,
+                                   LocalDate bookingDate,
+                                   LocalTime bookingTime,
+                                   boolean bookingStatus,
+                                   List<String> requirements,
+                                   float  totalAmount) {
 }

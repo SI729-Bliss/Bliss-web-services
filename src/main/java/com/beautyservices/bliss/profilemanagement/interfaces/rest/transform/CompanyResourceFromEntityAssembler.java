@@ -5,6 +5,6 @@ import com.beautyservices.bliss.profilemanagement.interfaces.rest.resources.Comp
 
 public class CompanyResourceFromEntityAssembler {
     public static CompanyResource toResourceFromEntity(Company entity){
-        return new CompanyResource(entity.getId(), entity.getName(), entity.getEmail(), entity.getAddress(), entity.getPhoneNumber());
+        return new CompanyResource(entity.getId(), entity.getName(), entity.getEmail(), entity.getAddress(), entity.getPhoneNumber(), entity.getRating());
     }
 }
