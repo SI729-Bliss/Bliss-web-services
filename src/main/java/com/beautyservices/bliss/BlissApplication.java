@@ -31,7 +31,8 @@ public class BlissApplication {
 				registry.addMapping("/**")
 						.allowedOrigins("*") // O especifica el dominio de tu cliente
 						.allowedMethods("GET", "POST", "PUT", "DELETE")
-						.allowedHeaders("Content-Type", "Authorization"); // Incluye 'Authorization' para JWT
+						.allowedHeaders("Content-Type", "Authorization")
+						.allowCredentials(true); // Incluye 'Authorization' para JWT
 			}
 		};
 	}
